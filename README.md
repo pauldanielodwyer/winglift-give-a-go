@@ -1,8 +1,8 @@
-# WingLift dashboard — clickable prototype (private)
+# WingLift dashboard — clickable prototype (staging)
 
 > **This is a prototype.** Static HTML/CSS/JS with hardcoded fake data. No backend, no auth, no persistence. Nothing publishes anywhere. It exists to demo the product concept before building it.
 
-Private repo, deployed to its own Cloudflare staging address (never the public winglift.io site). Crawlers are blocked with `robots.txt` and an `X-Robots-Tag` header in `_headers`; put the staging URL behind Cloudflare Access for real protection.
+Deployed to its own Cloudflare staging address (never the public winglift.io site). Crawlers are blocked with `robots.txt` and an `X-Robots-Tag` header in `_headers`; put the staging URL behind Cloudflare Access for real protection.
 
 Run locally with any static server, e.g. `python3 -m http.server 8000` from the repo root, then open `http://localhost:8000/`.
 
