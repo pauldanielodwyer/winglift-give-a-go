@@ -55,3 +55,7 @@ Do **not** show a numeric score anywhere. Show concrete findings instead:
 - `app.js` — hash router, in-memory state, screen renderers, click actions
 
 State is in memory only: reload or click **Restart demo** to reset.
+
+## `site-preview/`
+
+Review-only copy of the winglift.io homepage and the proposed `/eagle` page (from winglift-website PR #3), with links rewritten to `/site-preview/...`. The signup form is disabled here: nothing is stored or sent. Not the live site.

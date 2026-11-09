@@ -1,0 +1,1807 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WingLift - AI Visibility Audit</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+
+<!-- SEO / GEO meta -->
+<meta name="description" content="WingLift's Wren audits what ChatGPT, Claude and Gemini say about your business in under 60 seconds. Find out if AI recommends you - and get a plain-English list of fixes. Free to try. Built for EU & UK SMEs.">
+<meta name="robots" content="index, follow">
+<meta name="googlebot" content="index, follow">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://winglift.io/">
+<meta property="og:title" content="WingLift - AI Visibility Audit for EU & UK Businesses">
+<meta property="og:description" content="Find out what ChatGPT, Claude and Gemini say about your business in under 60 seconds. Get plain-English fixes. Free to try. No card required.">
+<meta property="og:image" content="https://winglift.io/og-image.png">
+<meta property="og:locale" content="en_GB">
+<meta property="og:site_name" content="WingLift">
+
+<!-- Twitter / X card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="WingLift - AI Visibility Audit">
+<meta name="twitter:description" content="See what ChatGPT, Claude & Gemini say about your business. Get fixes. Free to try.">
+<meta name="twitter:image" content="https://winglift.io/og-image.png">
+
+<!-- Canonical -->
+<link rel="canonical" href="https://winglift.io/">
+
+<!-- Structured data (JSON-LD) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Wren by WingLift",
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "Web",
+  "url": "https://winglift.io/",
+  "description": "AI Visibility Audit tool that checks what ChatGPT, Claude and Gemini say about your business and provides actionable fixes to improve your AI search presence.",
+  "offers": [
+    {
+      "@type": "Offer",
+      "name": "Free",
+      "price": "0",
+      "priceCurrency": "EUR"
+    },
+    {
+      "@type": "Offer",
+      "name": "Standard Monthly",
+      "price": "29.99",
+      "priceCurrency": "EUR",
+      "billingDuration": "P1M"
+    },
+    {
+      "@type": "Offer",
+      "name": "Standard Annual",
+      "price": "299.90",
+      "priceCurrency": "EUR",
+      "billingDuration": "P1Y"
+    }
+  ],
+  "provider": {
+    "@type": "Organization",
+    "name": "WingLift",
+    "legalName": "Shape Size or Form Ltd",
+    "url": "https://winglift.io/",
+    "logo": "https://winglift.io/og-image.png",
+    "foundingLocation": "Dublin, Ireland",
+    "areaServed": ["EU", "GB"],
+    "email": "info@winglift.io",
+    "sameAs": [
+      "https://www.facebook.com/people/WingLiftai/61595700029586/",
+      "https://www.instagram.com/wingliftai/",
+      "https://linkedin.com/company/wingliftai",
+      "https://www.youtube.com/@wingliftai"
+    ]
+  }
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Manrope:wght@600;700;800&display=swap">
+
+<style>
+/*
+  Layout: clean white SaaS, single product focus, pre-launch early-adopter
+  Palette: white bg, navy text, gold accent, light grey surfaces
+  WingLift brand: navy #13234A, gold #E3A72F
+*/
+:root {
+  --navy:     #13234A;
+  --navy-80:  #2B3D6B;
+  --gold:     #E3A72F;
+  --gold-dk:  #C8921A;
+  --bg:       #FFFFFF;
+  --surface:  #F7F8FC;
+  --border:   #E4E8F0;
+  --muted:    #6B7A99;
+  --fg:       #13234A;
+  --fg-soft:  #3D4F72;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg:      #0D1525;
+    --surface: #13234A;
+    --border:  rgba(255,255,255,0.08);
+    --muted:   #8A96B4;
+    --fg:      #F0F2F8;
+    --fg-soft: #B0BCDA;
+    --navy-80: #4A6099;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg:      #0D1525;
+  --surface: #13234A;
+  --border:  rgba(255,255,255,0.08);
+  --muted:   #8A96B4;
+  --fg:      #F0F2F8;
+  --fg-soft: #B0BCDA;
+  --navy-80: #4A6099;
+  color-scheme: dark;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 0;
+}
+
+.container {
+  max-width: 1100px;
+  margin-inline: auto;
+  padding-inline: max(24px, env(safe-area-inset-left, 0px));
+}
+
+/* ── NAV ── */
+nav {
+  position: sticky;
+  top: env(safe-area-inset-top, 0px);
+  z-index: 100;
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding-block: 0;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) nav { background: rgba(13,21,37,0.92); }
+}
+:root[data-theme="dark"] nav { background: rgba(13,21,37,0.92); }
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0 0 auto;
+  height: env(safe-area-inset-top, 0px);
+  z-index: 101;
+  background: var(--bg);
+}
+
+.nav-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 60px;
+  padding-inline: max(24px, env(safe-area-inset-left, 0px));
+  max-width: 1100px;
+  margin-inline: auto;
+}
+
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  text-decoration: none;
+  color: var(--fg);
+}
+.nav-logo svg { width: 26px; height: 34px; flex-shrink: 0; }
+.nav-wordmark { font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 1.05rem; letter-spacing: -0.01em; }
+.nav-tagline { font-size: 0.58rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); line-height: 1; display: block; margin-top: 1px; }
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+.nav-right a {
+  text-decoration: none;
+  color: var(--muted);
+  font-size: 0.88rem;
+  font-weight: 500;
+  transition: color 0.15s;
+}
+.nav-right a:hover { color: var(--fg); }
+.nav-cta {
+  background: var(--navy) !important;
+  color: #fff !important;
+  padding: 8px 18px !important;
+  border-radius: 7px !important;
+  font-weight: 600 !important;
+  font-size: 0.85rem !important;
+  transition: background 0.15s !important;
+}
+.nav-cta:hover { background: var(--navy-80) !important; }
+
+/* ── ANNOUNCEMENT BANNER ── */
+.banner {
+  background: var(--navy);
+  color: #fff;
+  text-align: center;
+  padding: 10px 24px;
+  font-size: 0.83rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+}
+.banner strong { color: var(--gold); }
+.banner a { color: var(--gold); text-decoration: underline; text-underline-offset: 3px; }
+
+/* ── HERO ── */
+#hero {
+  padding-top: 80px;
+  padding-bottom: 80px;
+  text-align: center;
+  background: var(--bg);
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: rgba(227,167,47,0.1);
+  border: 1px solid rgba(227,167,47,0.3);
+  color: var(--gold-dk);
+  border-radius: 20px;
+  padding: 5px 14px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-bottom: 28px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .hero-badge { color: var(--gold); }
+}
+:root[data-theme="dark"] .hero-badge { color: var(--gold); }
+
+.hero-badge::before {
+  content: "";
+  width: 7px; height: 7px;
+  background: var(--gold);
+  border-radius: 50%;
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+@keyframes pulse-dot {
+  0%,100% { opacity: 1; transform: scale(1); }
+  50%      { opacity: 0.5; transform: scale(0.7); }
+}
+
+h1 {
+  font-family: 'Manrope', sans-serif;
+  font-size: clamp(2.2rem, 5.5vw, 3.8rem);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  color: var(--fg);
+  text-wrap: balance;
+  max-width: 760px;
+  margin-inline: auto;
+  margin-bottom: 20px;
+}
+h1 span { color: var(--gold); }
+
+.hero-sub {
+  font-size: 1.1rem;
+  color: var(--fg-soft);
+  max-width: 540px;
+  margin-inline: auto;
+  margin-bottom: 44px;
+  line-height: 1.7;
+}
+
+/* ── HERO WREN ── */
+.hero-wren {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  max-width: 640px;
+  margin-inline: auto;
+  margin-bottom: 44px;
+  text-align: left;
+}
+.wren-img {
+  width: 110px;
+  height: 110px;
+  flex-shrink: 0;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 16px rgba(19,35,74,0.12));
+}
+.hero-wren .hero-sub {
+  margin-bottom: 0;
+  text-align: left;
+}
+@media (max-width: 500px) {
+  .hero-wren { flex-direction: column; text-align: center; }
+  .hero-wren .hero-sub { text-align: center; }
+  .wren-img { width: 80px; height: 80px; }
+}
+
+/* ── EMAIL CAPTURE ── */
+.signup-box {
+  display: flex;
+  gap: 10px;
+  max-width: 480px;
+  margin-inline: auto;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+}
+.signup-box input {
+  flex: 1;
+  min-width: 220px;
+  height: 50px;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  padding: 0 16px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.95rem;
+  background: var(--bg);
+  color: var(--fg);
+  outline: none;
+  transition: border-color 0.2s;
+}
+.signup-box input::placeholder { color: var(--muted); }
+.signup-box input:focus { border-color: var(--gold); }
+.btn-gold {
+  height: 50px;
+  padding: 0 24px;
+  background: var(--gold);
+  color: var(--navy);
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 0.92rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s, transform 0.1s;
+}
+.btn-gold:hover { background: var(--gold-dk); transform: translateY(-1px); }
+
+.consent-label {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  font-size: 0.82rem;
+  color: var(--fg-soft);
+  cursor: pointer;
+  line-height: 1.4;
+  max-width: 400px;
+  margin: 8px auto 0;
+  text-align: left;
+}
+.consent-label input[type="checkbox"] {
+  flex-shrink: 0;
+  margin-top: 2px;
+  accent-color: var(--gold);
+  width: 13px;
+  height: 13px;
+  cursor: pointer;
+}
+.consent-label span {
+  display: inline;
+}
+.consent-label a { color: var(--navy); }
+.consent-label-dark { color: rgba(255,255,255,0.7); }
+.consent-label-dark a { color: rgba(255,255,255,0.9); }
+.consent-error { color: #E36B4A; font-size: 0.82rem; margin-top: 4px; display: none; }
+
+.signup-note {
+  font-size: 0.8rem;
+  color: var(--muted);
+  text-align: center;
+}
+.signup-note strong { color: var(--gold-dk); }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .signup-note strong { color: var(--gold); }
+}
+:root[data-theme="dark"] .signup-note strong { color: var(--gold); }
+
+/* Confirmation state */
+.signup-confirm {
+  display: none;
+  background: rgba(74,201,107,0.08);
+  border: 1px solid rgba(74,201,107,0.25);
+  border-radius: 8px;
+  padding: 14px 20px;
+  color: #2a9d4f;
+  font-weight: 600;
+  font-size: 0.9rem;
+  max-width: 480px;
+  margin-inline: auto;
+  margin-bottom: 14px;
+  text-align: center;
+}
+
+/* ── SOCIAL PROOF STRIP ── */
+.proof-strip {
+  margin-top: 60px;
+  padding-top: 36px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: center;
+  gap: 48px;
+  flex-wrap: wrap;
+}
+.proof-item { text-align: center; }
+.proof-num {
+  font-family: 'Manrope', sans-serif;
+  font-size: 1.9rem;
+  font-weight: 800;
+  color: var(--fg);
+  display: block;
+  line-height: 1;
+  margin-bottom: 4px;
+  font-variant-numeric: tabular-nums;
+}
+.proof-label { font-size: 0.8rem; color: var(--muted); }
+
+/* ── GDPR TRUST STRIP ── */
+.trust-strip {
+  margin-top: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+.gdpr-badge {
+  border: 2px solid var(--navy);
+  border-radius: 10px;
+  overflow: hidden;
+  flex-shrink: 0;
+  min-width: 220px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .gdpr-badge { border-color: var(--gold); }
+}
+:root[data-theme="dark"] .gdpr-badge { border-color: var(--gold); }
+.gdpr-badge-inner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: var(--bg);
+}
+.gdpr-tick-wrap { flex-shrink: 0; }
+.gdpr-title {
+  font-family: 'Manrope', sans-serif;
+  font-weight: 800;
+  font-size: 0.9rem;
+  color: var(--navy);
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .gdpr-title { color: var(--gold); }
+}
+:root[data-theme="dark"] .gdpr-title { color: var(--gold); }
+.gdpr-sub {
+  font-size: 0.72rem;
+  color: var(--muted);
+  font-weight: 500;
+  line-height: 1.3;
+  margin-top: 2px;
+}
+.gdpr-footer {
+  background: var(--navy);
+  color: rgba(255,255,255,0.65);
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-align: center;
+  padding: 4px 8px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .gdpr-footer { background: var(--gold); color: var(--navy); }
+}
+:root[data-theme="dark"] .gdpr-footer { background: var(--gold); color: var(--navy); }
+.trust-badges-inline {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.trust-badge {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--fg-soft);
+}
+.trust-badge svg { flex-shrink: 0; color: var(--navy); }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .trust-badge svg { color: var(--gold); }
+}
+:root[data-theme="dark"] .trust-badge svg { color: var(--gold); }
+
+/* ── REPORT PREVIEW ── */
+#preview {
+  background: var(--surface);
+  padding-block: 88px;
+}
+.section-eyebrow {
+  font-size: 0.73rem;
+  font-weight: 700;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--gold-dk);
+  margin-bottom: 10px;
+  display: block;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .section-eyebrow { color: var(--gold); }
+}
+:root[data-theme="dark"] .section-eyebrow { color: var(--gold); }
+
+h2 {
+  font-family: 'Manrope', sans-serif;
+  font-size: clamp(1.6rem, 3vw, 2.3rem);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: var(--fg);
+  text-wrap: balance;
+  margin-bottom: 14px;
+}
+.section-sub {
+  font-size: 1rem;
+  color: var(--fg-soft);
+  max-width: 500px;
+  line-height: 1.7;
+  margin-bottom: 52px;
+}
+
+.preview-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: center;
+}
+
+/* Report mockup card */
+.report-card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 4px 32px rgba(19,35,74,0.08);
+}
+.report-topbar {
+  background: var(--navy);
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.report-topbar-left { display: flex; align-items: center; gap: 10px; }
+.report-dots { display: flex; gap: 5px; }
+.report-dots span {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.2);
+}
+.report-title-bar { font-size: 0.75rem; color: rgba(255,255,255,0.5); font-weight: 500; }
+.report-live { display: flex; align-items: center; gap: 5px; font-size: 0.7rem; color: #4AC96B; font-weight: 600; }
+.report-live::before { content: ""; width: 6px; height: 6px; background: #4AC96B; border-radius: 50%; animation: pulse-dot 1.5s infinite; }
+
+.report-body { padding: 20px; }
+.report-biz { margin-bottom: 16px; }
+.report-biz-name { font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 1rem; color: var(--fg); }
+.report-biz-meta { font-size: 0.75rem; color: var(--muted); margin-top: 2px; }
+
+.ai-rows { border: 1px solid var(--border); border-radius: 9px; overflow: hidden; margin-bottom: 16px; }
+.ai-row {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 14px;
+  border-bottom: 1px solid var(--border);
+}
+.ai-row:last-child { border-bottom: none; }
+.ai-name { font-size: 0.83rem; font-weight: 500; color: var(--fg); }
+.ai-bar-wrap { width: 80px; height: 5px; background: var(--border); border-radius: 3px; overflow: hidden; }
+.ai-bar { height: 100%; border-radius: 3px; }
+.bar-green  { background: #4AC96B; }
+.bar-gold   { background: var(--gold); }
+.bar-red    { background: #E36B4A; }
+.ai-label { font-size: 0.75rem; font-weight: 600; width: 68px; text-align: right; font-variant-numeric: tabular-nums; }
+.label-green { color: #4AC96B; }
+.label-gold  { color: var(--gold-dk); }
+.label-red   { color: #E36B4A; }
+
+.report-metrics {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: 10px;
+}
+.metric-tile {
+  background: var(--surface);
+  border-radius: 8px;
+  padding: 10px 12px;
+  text-align: center;
+}
+.metric-val { font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 1.3rem; color: var(--fg); display: block; font-variant-numeric: tabular-nums; }
+.metric-key { font-size: 0.68rem; color: var(--muted); margin-top: 2px; line-height: 1.3; }
+
+.report-fix {
+  margin-top: 14px;
+  background: rgba(227,167,47,0.07);
+  border: 1px solid rgba(227,167,47,0.2);
+  border-radius: 8px;
+  padding: 11px 14px;
+}
+.fix-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gold-dk); margin-bottom: 6px; }
+.fix-item { font-size: 0.8rem; color: var(--fg-soft); display: flex; gap: 7px; align-items: flex-start; margin-bottom: 4px; line-height: 1.4; }
+.fix-item::before { content: "→"; color: var(--gold); flex-shrink: 0; }
+.fix-item:last-child { margin-bottom: 0; }
+
+/* Benefit list */
+.benefit-list { list-style: none; display: flex; flex-direction: column; gap: 22px; }
+.benefit-item { display: flex; gap: 16px; align-items: flex-start; }
+.benefit-icon {
+  width: 40px; height: 40px;
+  background: rgba(227,167,47,0.1);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  font-size: 1.1rem;
+}
+.benefit-title { font-weight: 600; font-size: 0.95rem; color: var(--fg); margin-bottom: 3px; }
+.benefit-desc { font-size: 0.875rem; color: var(--muted); line-height: 1.6; }
+
+/* ── HOW IT WORKS ── */
+#how { padding-block: 88px; background: var(--bg); }
+.steps { display: grid; grid-template-columns: repeat(3,1fr); gap: 0; margin-top: 52px; }
+.step {
+  padding: 32px 28px 28px;
+  border-top: 3px solid var(--navy);
+  position: relative;
+}
+.step-num {
+  font-family: 'Manrope', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: #9AA3B4;
+  margin-bottom: 16px;
+  display: block;
+}
+.step h3 { font-family: 'Manrope', sans-serif; font-size: 1.05rem; font-weight: 700; margin-bottom: 10px; color: var(--fg); }
+.step p  { font-size: 0.875rem; color: var(--muted); line-height: 1.65; }
+
+/* AI platforms strip */
+.ai-platforms {
+  margin-top: 56px;
+  padding-top: 40px;
+  border-top: 1px solid var(--border);
+  text-align: center;
+}
+.ai-platforms-eyebrow {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 20px;
+  display: block;
+}
+.ai-logos {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.ai-logo-tile {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 20px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--fg);
+}
+.ai-logo-tile svg { flex-shrink: 0; }
+
+/* ── PRICING ── */
+#pricing { background: var(--surface); padding-block: 88px; }
+.pricing-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; max-width: 760px; margin-inline: auto; margin-top: 52px; }
+.price-card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 32px 28px;
+  position: relative;
+}
+.price-card.featured {
+  border-color: var(--navy);
+  border-width: 2px;
+}
+.price-featured-tag {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--navy);
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 4px 14px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+.pricing-toggle { display: flex; gap: 8px; justify-content: center; margin-bottom: 28px; }
+.toggle-btn { padding: 8px 20px; border-radius: 20px; border: 1.5px solid var(--border); background: transparent; font-family: 'Inter', sans-serif; font-size: 0.88rem; color: var(--fg-soft); cursor: pointer; transition: all 0.2s; }
+.toggle-btn.active { background: var(--navy); color: #fff; border-color: var(--navy); }
+.toggle-save { font-size: 0.75rem; font-weight: 700; color: var(--gold-dk); margin-left: 4px; }
+.price-tier { font-size: 0.78rem; font-weight: 600; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 8px; }
+.price-amount {
+  font-family: 'Manrope', sans-serif;
+  font-size: 2.4rem;
+  font-weight: 800;
+  color: var(--fg);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.price-amount sup { font-size: 1rem; vertical-align: super; }
+.price-period { font-size: 0.85rem; color: var(--muted); margin-bottom: 4px; }
+.price-early {
+  font-size: 0.78rem;
+  color: var(--gold-dk);
+  font-weight: 600;
+  margin-bottom: 20px;
+  padding: 5px 10px;
+  background: rgba(227,167,47,0.08);
+  border-radius: 5px;
+  display: inline-block;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .price-early { color: var(--gold); }
+}
+:root[data-theme="dark"] .price-early { color: var(--gold); }
+.price-features { list-style: none; display: flex; flex-direction: column; gap: 9px; margin-bottom: 28px; }
+.price-features li { font-size: 0.85rem; color: var(--fg-soft); display: flex; gap: 9px; }
+.price-features li::before { content: "✓"; color: var(--gold-dk); font-weight: 700; flex-shrink: 0; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .price-features li::before { color: var(--gold); }
+}
+:root[data-theme="dark"] .price-features li::before { color: var(--gold); }
+.btn-navy {
+  display: block;
+  width: 100%;
+  padding: 13px;
+  background: var(--navy);
+  color: #fff;
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 0.9rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  transition: background 0.15s;
+}
+.btn-navy:hover { background: var(--navy-80); }
+.btn-outline {
+  display: block;
+  width: 100%;
+  padding: 13px;
+  background: transparent;
+  color: var(--fg);
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 0.9rem;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  transition: border-color 0.15s;
+}
+.btn-outline:hover { border-color: var(--navy); }
+
+/* ── ARTICLES ── */
+#articles { background: var(--bg); padding-block: 88px; }
+.articles-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-top: 52px;
+}
+.article-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 28px 26px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: box-shadow 0.2s, transform 0.15s;
+}
+.article-card:hover {
+  box-shadow: 0 6px 28px rgba(19,35,74,0.1);
+  transform: translateY(-2px);
+}
+.article-tag {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gold-dk);
+  background: rgba(227,167,47,0.1);
+  border-radius: 4px;
+  padding: 3px 9px;
+  align-self: flex-start;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .article-tag { color: var(--gold); }
+}
+:root[data-theme="dark"] .article-tag { color: var(--gold); }
+.article-title {
+  font-family: 'Manrope', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.35;
+  color: var(--fg);
+}
+.article-excerpt {
+  font-size: 0.85rem;
+  color: var(--muted);
+  line-height: 1.65;
+  flex: 1;
+}
+.article-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+  margin-top: auto;
+}
+.article-date { font-size: 0.78rem; color: var(--muted); }
+.article-cta {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--navy);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+.article-cta:hover { color: var(--gold-dk); }
+@media (max-width: 800px) {
+  .articles-grid { grid-template-columns: 1fr; max-width: 480px; margin-inline: auto; }
+}
+
+/* ── FAQ ── */
+#faq { background: var(--surface); padding-block: 88px; }
+.faq-list { max-width: 680px; margin-inline: auto; margin-top: 48px; display: flex; flex-direction: column; gap: 0; }
+.faq-item { border-bottom: 1px solid var(--border); }
+.faq-q {
+  width: 100%;
+  background: none;
+  border: none;
+  text-align: left;
+  padding: 18px 0;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--fg);
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+.faq-q::after { content: "+"; font-size: 1.2rem; color: var(--muted); flex-shrink: 0; transition: transform 0.2s; }
+.faq-item.open .faq-q::after { transform: rotate(45deg); }
+.faq-a { display: none; padding-bottom: 16px; font-size: 0.88rem; color: var(--muted); line-height: 1.75; }
+.faq-item.open .faq-a { display: block; }
+
+/* ── FINAL CTA ── */
+#cta {
+  background: var(--navy);
+  padding-block: 88px;
+  text-align: center;
+}
+#cta h2 { color: #fff; margin-bottom: 14px; }
+#cta p  { color: rgba(255,255,255,0.6); max-width: 480px; margin-inline: auto; margin-bottom: 40px; }
+.cta-signup { display: flex; gap: 10px; max-width: 440px; margin-inline: auto; flex-wrap: wrap; }
+.cta-signup input {
+  flex: 1;
+  min-width: 200px;
+  height: 50px;
+  border: 1.5px solid rgba(255,255,255,0.2);
+  border-radius: 8px;
+  padding: 0 16px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9rem;
+  background: rgba(255,255,255,0.07);
+  color: #fff;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.cta-signup input::placeholder { color: rgba(255,255,255,0.35); }
+.cta-signup input:focus { border-color: var(--gold); }
+.cta-note { font-size: 0.78rem; color: rgba(255,255,255,0.4); margin-top: 12px; }
+.cta-note strong { color: var(--gold); }
+.cta-confirm { display: none; color: #4AC96B; font-weight: 600; font-size: 0.9rem; margin-top: 12px; }
+
+/* ── FOOTER ── */
+footer {
+  background: #0A1020;
+  padding-block: 40px;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+.footer-inner {
+  max-width: 1100px;
+  margin-inline: auto;
+  padding-inline: max(24px, env(safe-area-inset-left, 0px));
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.footer-logo { display: flex; align-items: center; gap: 8px; text-decoration: none; color: #fff; }
+.footer-logo svg { width: 20px; height: 26px; }
+.footer-wordmark { font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 0.95rem; }
+.footer-links { display: flex; gap: 20px; list-style: none; flex-wrap: wrap; }
+.footer-links a { color: rgba(255,255,255,0.4); font-size: 0.82rem; text-decoration: none; transition: color 0.15s; }
+.footer-links a:hover { color: rgba(255,255,255,0.8); }
+.footer-copy { font-size: 0.78rem; color: rgba(255,255,255,0.3); }
+.footer-social { display: flex; gap: 10px; align-items: center; }
+.footer-social a {
+  display: flex; align-items: center; justify-content: center;
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.08);
+  color: rgba(255,255,255,0.6);
+  text-decoration: none;
+  transition: background 0.15s, color 0.15s;
+}
+.footer-social a:hover { background: var(--gold); color: var(--navy); }
+.footer-legal {
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.25);
+  margin-top: 14px;
+  line-height: 1.6;
+}
+.footer-legal a { color: rgba(255,255,255,0.4); text-decoration: underline; }
+.footer-legal a:hover { color: rgba(255,255,255,0.7); }
+
+/* ── COOKIE BANNER ── */
+/* ── Privacy modal ── */
+#privacy-modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 9000;
+  background: rgba(10,18,40,0.65);
+  backdrop-filter: blur(3px);
+  overflow-y: auto;
+  padding: 32px 16px;
+}
+#privacy-modal.open { display: block; }
+.privacy-modal-box {
+  background: var(--bg);
+  border-radius: 14px;
+  max-width: 740px;
+  margin: 0 auto;
+  padding: 40px 44px 48px;
+  position: relative;
+  box-shadow: 0 24px 60px rgba(0,0,0,0.25);
+}
+@media (max-width: 600px) { .privacy-modal-box { padding: 28px 20px 36px; } }
+.privacy-modal-close {
+  position: absolute;
+  top: 18px; right: 20px;
+  background: none; border: none;
+  font-size: 1.4rem; cursor: pointer;
+  color: var(--muted); line-height: 1;
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+.privacy-modal-close:hover { background: var(--surface); color: var(--navy); }
+.privacy-modal-box h1 { font-family: 'Manrope',sans-serif; font-size: 1.6rem; font-weight: 800; color: var(--navy); margin-bottom: 4px; }
+.privacy-modal-box .pm-updated { font-size: 0.85rem; color: var(--muted); margin-bottom: 28px; }
+.privacy-modal-box h2 { font-family: 'Manrope',sans-serif; font-size: 1.1rem; font-weight: 700; color: var(--navy); margin: 28px 0 8px; }
+.privacy-modal-box h3 { font-size: 0.95rem; font-weight: 600; color: var(--navy); margin: 18px 0 6px; }
+.privacy-modal-box p { font-size: 0.95rem; color: var(--fg-soft); margin-bottom: 12px; line-height: 1.65; }
+.privacy-modal-box ul { margin: 0 0 12px 18px; color: var(--fg-soft); font-size: 0.95rem; }
+.privacy-modal-box li { margin-bottom: 5px; line-height: 1.6; }
+.privacy-modal-box a { color: var(--navy); }
+.privacy-modal-box a:hover { color: var(--gold); }
+.pm-table { width: 100%; border-collapse: collapse; margin: 12px 0 20px; font-size: 0.875rem; }
+.pm-table th { background: var(--surface); text-align: left; padding: 8px 10px; border: 1px solid var(--border); font-weight: 600; color: var(--navy); }
+.pm-table td { padding: 8px 10px; border: 1px solid var(--border); color: var(--fg-soft); vertical-align: top; }
+.pm-highlight { background: var(--surface); border-left: 3px solid var(--gold); padding: 14px 18px; border-radius: 0 8px 8px 0; margin: 16px 0 20px; }
+.pm-highlight p { margin-bottom: 0; }
+
+#cookie-banner {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  background: var(--navy);
+  color: rgba(255,255,255,0.85);
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  z-index: 9999;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  box-shadow: 0 -4px 24px rgba(0,0,0,0.2);
+}
+#cookie-banner a { color: var(--gold); text-decoration: underline; }
+.cookie-actions { display: flex; gap: 10px; flex-shrink: 0; }
+.btn-cookie-accept {
+  background: var(--gold);
+  color: var(--navy);
+  border: none;
+  border-radius: 6px;
+  padding: 8px 18px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: 'Manrope', sans-serif;
+}
+.btn-cookie-decline {
+  background: transparent;
+  color: rgba(255,255,255,0.6);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 6px;
+  padding: 8px 14px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: 'Manrope', sans-serif;
+}
+.btn-cookie-decline:hover { color: #fff; border-color: rgba(255,255,255,0.5); }
+
+/* ── MOBILE ── */
+@media (max-width: 800px) {
+  .preview-grid { grid-template-columns: 1fr; }
+  .steps { grid-template-columns: 1fr 1fr; }
+  .pricing-grid { grid-template-columns: 1fr; max-width: 400px; }
+  .proof-strip { gap: 28px; }
+}
+@media (max-width: 500px) {
+  h1 { font-size: 2rem; }
+  .steps { grid-template-columns: 1fr; }
+  .nav-right a:not(.nav-cta) { display: none; }
+  .report-metrics { grid-template-columns: repeat(3,1fr); }
+}
+/* ── EAGLE TEASER ── */
+#eagle { padding-block: 64px 0; background: var(--bg); }
+.eagle-band { display: flex; align-items: center; justify-content: space-between; gap: 32px; background: var(--navy); color: #fff; border-radius: 16px; padding: 40px 44px; text-decoration: none; transition: transform 0.15s; }
+.eagle-band:hover { transform: translateY(-2px); }
+.eagle-kicker { font-size: 0.73rem; font-weight: 700; letter-spacing: 0.13em; text-transform: uppercase; color: var(--gold); display: block; margin-bottom: 10px; }
+.eagle-band h2 { color: #fff; margin-bottom: 10px; }
+.eagle-band p { color: rgba(255,255,255,0.7); font-size: 0.95rem; max-width: 620px; line-height: 1.7; }
+.eagle-btn { flex-shrink: 0; background: var(--gold); color: var(--navy); font-weight: 600; font-size: 0.95rem; padding: 14px 24px; border-radius: 8px; white-space: nowrap; }
+@media (max-width: 800px) {
+  .eagle-band { flex-direction: column; align-items: flex-start; padding: 32px 28px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+</style>
+
+<!-- ANNOUNCEMENT BANNER -->
+<div class="banner">
+  🐦 <strong>Founding Member price locked for life.</strong> <a href="#cta">Claim your spot →</a>
+</div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">
+      <svg viewBox="0 0 56 72" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <!-- Navy feather (back) -->
+        <path d="M8 68 C8 68 6 52 18 28 C26 12 36 4 40 2 C40 2 34 8 30 22 C24 42 22 62 22 68 Z" fill="#13234A"/>
+        <!-- Steel blue feather (middle) -->
+        <path d="M18 70 C18 70 20 54 32 32 C40 16 50 8 54 6 C54 6 46 14 42 28 C36 48 34 66 34 70 Z" fill="#4A6CB7"/>
+        <!-- Gold feather (front) -->
+        <path d="M26 72 C26 72 34 60 44 46 C50 38 56 32 56 32 C56 32 50 40 46 50 C40 62 38 72 38 72 Z" fill="#E3A72F"/>
+      </svg>
+      <span>
+        <span class="nav-wordmark">WingLift</span>
+        <span class="nav-tagline">Get found by AI</span>
+      </span>
+    </a>
+    <div class="nav-right">
+      <a href="/site-preview/eagle">Eagle</a>
+      <a href="#how">How it works</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#articles">Articles</a>
+      <a href="#faq">FAQ</a>
+      <a href="#cta" class="nav-cta">Get early access</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="container">
+    <div class="hero-badge">Early access · Built for Irish, UK &amp; EU SMEs</div>
+    <h1>When customers ask AI to recommend a business like yours, do you come up?</h1>
+    <div class="hero-wren">
+      <img src="data:image/png;base64,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" alt="Wren — your AI visibility agent" class="wren-img">
+      <p class="hero-sub">
+        <strong>Meet Wren.</strong> In under 60 seconds she finds out what ChatGPT, Claude and Gemini say about your business - and gives you a plain-English list of fixes so you show up when it counts. No jargon, no 400-page SEO reports, no enterprise contract.
+      </p>
+    </div>
+
+    <div class="signup-box" id="heroForm">
+      <input type="email" id="heroEmail" placeholder="Your business email" autocomplete="email">
+      <button class="btn-gold" onclick="handleSignup('heroEmail','heroConfirm','heroForm','heroConsent')">Get early access</button>
+    </div>
+    <label class="consent-label">
+      <input type="checkbox" id="heroConsent">
+      <span>Yes, reserve my Founding Member spot and keep me posted on WingLift. <a href="#" onclick="openPrivacy();return false;">Privacy Policy</a> &middot; <a href="#" onclick="openFounderTerms();return false;">Founding Member Terms</a>.</span>
+    </label>
+    <div class="signup-confirm" id="heroConfirm">
+      ✓ You're on the list. We'll be in touch before launch with your Founding Member details.
+    </div>
+    <p class="signup-note">Free to try · No credit card · <strong>Run a live audit on your own business before you commit to anything</strong></p>
+
+    <div class="proof-strip">
+      <div class="proof-item">
+        <span class="proof-num">3</span>
+        <span class="proof-label">AI systems - ChatGPT, Claude, Gemini</span>
+      </div>
+      <div class="proof-item">
+        <span class="proof-num">&lt;60s</span>
+        <span class="proof-label">To your first report</span>
+      </div>
+      <div class="proof-item">
+        <span class="proof-num">100</span>
+        <span class="proof-label">Founding Member spots total</span>
+      </div>
+      <div class="proof-item">
+        <span class="proof-num">€29.99</span>
+        <span class="proof-label">/mo - not €99, not €299</span>
+      </div>
+    </div>
+
+    <div class="trust-strip">
+      <!-- GDPR Badge -->
+      <div class="gdpr-badge">
+        <div class="gdpr-badge-inner">
+          <div class="gdpr-tick-wrap">
+            <svg class="gdpr-tick" width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="11" fill="#13234A"/><polyline points="5,12 10,17 19,8" stroke="#E3A72F" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="gdpr-text">
+            <div class="gdpr-title">GDPR Compliant</div>
+            <div class="gdpr-sub">EU &amp; UK · Data Stays in Europe</div>
+          </div>
+        </div>
+        <div class="gdpr-footer">WingLift Privacy Standard · wingLift.io</div>
+      </div>
+      <!-- Other trust signals -->
+      <div class="trust-badges-inline">
+        <div class="trust-badge">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          European servers only
+        </div>
+        <div class="trust-badge">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          No data sold to third parties
+        </div>
+        <div class="trust-badge">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          UK GDPR Compliant
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- REPORT PREVIEW -->
+<section id="preview">
+  <div class="container">
+    <div class="preview-grid">
+      <div>
+        <span class="section-eyebrow">What you get</span>
+        <h2>Real answers. Real fixes. Not another dashboard.</h2>
+        <p class="section-sub">Most tools tell you your AI "score." Wren shows you the actual words ChatGPT, Claude and Gemini use - and tells you specifically what to change so more customers find you.</p>
+        <ul class="benefit-list">
+          <li class="benefit-item">
+            <div class="benefit-icon">🔍</div>
+            <div>
+              <div class="benefit-title">See the actual AI responses, word for word</div>
+              <div class="benefit-desc">Not a score or an average - the exact text ChatGPT, Claude and Gemini produce when someone asks "who's the best [your category] near me?" Verified against your own website.</div>
+            </div>
+          </li>
+          <li class="benefit-item">
+            <div class="benefit-icon">⚡</div>
+            <div>
+              <div class="benefit-title">Fix the wrong information AI is spreading</div>
+              <div class="benefit-desc">AI systems confidently repeat outdated hours, old addresses and missing services. Wren flags every inaccuracy and tells you where to correct it - no guesswork.</div>
+            </div>
+          </li>
+          <li class="benefit-item">
+            <div class="benefit-icon">📈</div>
+            <div>
+              <div class="benefit-title">Know exactly why a competitor outranks you</div>
+              <div class="benefit-desc">Find out which businesses AI names first - and what they're doing that you're not. Then close the gap with targeted fixes, not a marketing agency retainer.</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Sample report card -->
+      <div class="report-card">
+        <div class="report-topbar">
+          <div class="report-topbar-left">
+            <div class="report-dots"><span></span><span></span><span></span></div>
+            <span class="report-title-bar">Wren · AI Visibility Report</span>
+          </div>
+          <div class="report-live">Live report</div>
+        </div>
+        <div class="report-body">
+          <div class="report-biz">
+            <div class="report-biz-name">Murphy's Bakery, Cork</div>
+            <div class="report-biz-meta">Audited today · 3 of 3 AI systems checked</div>
+          </div>
+
+          <div class="ai-rows">
+            <div class="ai-row">
+              <span class="ai-name">ChatGPT</span>
+              <div class="ai-bar-wrap"><div class="ai-bar bar-green" style="width:100%"></div></div>
+              <span class="ai-label label-green">Named first</span>
+            </div>
+            <div class="ai-row">
+              <span class="ai-name">Claude</span>
+              <div class="ai-bar-wrap"><div class="ai-bar bar-gold" style="width:55%"></div></div>
+              <span class="ai-label label-gold">Mentioned</span>
+            </div>
+            <div class="ai-row">
+              <span class="ai-name">Gemini</span>
+              <div class="ai-bar-wrap"><div class="ai-bar bar-red" style="width:15%"></div></div>
+              <span class="ai-label label-red">Not found</span>
+            </div>
+          </div>
+
+          <div class="report-metrics">
+            <div class="metric-tile">
+              <span class="metric-val">2/3</span>
+              <span class="metric-key">AI systems mention you</span>
+            </div>
+            <div class="metric-tile">
+              <span class="metric-val">1</span>
+              <span class="metric-key">Accuracy issue found</span>
+            </div>
+            <div class="metric-tile">
+              <span class="metric-val">3</span>
+              <span class="metric-key">Competitors appeared</span>
+            </div>
+          </div>
+
+          <div class="report-fix">
+            <div class="fix-label">Suggested fixes</div>
+            <div class="fix-item">Add opening hours to your Google Business Profile - Gemini can't find them.</div>
+            <div class="fix-item">Your website doesn't mention "gluten-free options" - Claude is recommending a competitor who does.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how">
+  <div class="container">
+    <span class="section-eyebrow">How it works</span>
+    <h2>Your first AI report in 60 seconds - no setup, no jargon</h2>
+    <p class="section-sub">Unlike enterprise tools that take a week to onboard, Wren gives you answers immediately. Tell her your business name and she handles everything else.</p>
+    <div class="steps">
+      <div class="step">
+        <span class="step-num">01</span>
+        <h3>Tell us about your business</h3>
+        <p>Business name, category and location. That's all we need - no account, no setup fee, no credit card.</p>
+      </div>
+      <div class="step">
+        <span class="step-num">02</span>
+        <h3>We ask ChatGPT, Claude &amp; Gemini</h3>
+        <p>The same questions a real customer would ask. We capture exactly what each AI says about you - and what it says about your competitors.</p>
+      </div>
+      <div class="step">
+        <span class="step-num">03</span>
+        <h3>Get your visibility report</h3>
+        <p>A plain-English breakdown of where you stand, what's wrong, and a short list of fixes ordered by impact. No jargon, no 400-page PDF.</p>
+      </div>
+    </div>
+
+    <div class="ai-platforms">
+      <span class="ai-platforms-eyebrow">AI platforms we check</span>
+      <div class="ai-logos">
+        <div class="ai-logo-tile">
+          <!-- ChatGPT icon -->
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22.282 9.821a5.985 5.985 0 0 0-.516-4.91 6.046 6.046 0 0 0-6.51-2.9A6.065 6.065 0 0 0 4.981 4.18a5.985 5.985 0 0 0-3.998 2.9 6.046 6.046 0 0 0 .743 7.097 5.98 5.98 0 0 0 .51 4.911 6.051 6.051 0 0 0 6.515 2.9A5.985 5.985 0 0 0 13.26 24a6.056 6.056 0 0 0 5.772-4.206 5.99 5.99 0 0 0 3.997-2.9 6.056 6.056 0 0 0-.747-7.073zM13.26 22.43a4.476 4.476 0 0 1-2.876-1.04l.141-.081 4.779-2.758a.795.795 0 0 0 .392-.681v-6.737l2.02 1.168a.071.071 0 0 1 .038.052v5.583a4.504 4.504 0 0 1-4.494 4.494zM3.6 18.304a4.47 4.47 0 0 1-.535-3.014l.142.085 4.783 2.759a.771.771 0 0 0 .78 0l5.843-3.369v2.332a.08.08 0 0 1-.033.062L9.74 19.95a4.5 4.5 0 0 1-6.14-1.646zM2.34 7.896a4.485 4.485 0 0 1 2.366-1.973V11.6a.766.766 0 0 0 .388.677l5.815 3.355-2.02 1.168a.076.076 0 0 1-.071 0l-4.83-2.786A4.504 4.504 0 0 1 2.34 7.872zm16.597 3.855l-5.833-3.387L15.119 7.2a.076.076 0 0 1 .071 0l4.83 2.791a4.494 4.494 0 0 1-.676 8.105v-5.678a.79.79 0 0 0-.407-.667zm2.01-3.023l-.141-.085-4.774-2.782a.776.776 0 0 0-.785 0L9.409 9.23V6.897a.066.066 0 0 1 .028-.061l4.83-2.787a4.5 4.5 0 0 1 6.68 4.66zm-12.64 4.135l-2.02-1.164a.08.08 0 0 1-.038-.057V6.075a4.5 4.5 0 0 1 7.375-3.453l-.142.08L8.704 5.46a.795.795 0 0 0-.393.681zm1.097-2.365l2.602-1.5 2.607 1.5v2.999l-2.597 1.5-2.607-1.5z" fill="#10a37f"/></svg>
+          ChatGPT
+        </div>
+        <div class="ai-logo-tile">
+          <!-- Claude icon -->
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M17.304 1.134C15.394.285 13.24-.064 11.083.01 8.96.08 6.874.561 4.97 1.48 3.098 2.382 1.456 3.78.53 5.625c-.896 1.79-.93 3.927-.168 5.784.386.94.962 1.8 1.677 2.52-.07.327-.122.658-.153.99-.12 1.282.03 2.58.457 3.783.426 1.201 1.12 2.304 2.04 3.192.922.888 2.055 1.542 3.285 1.88 1.23.337 2.549.342 3.782.014 0 0 1.697 1.137 4.027 1.137 0 0-1.037-1.455-.7-2.69a7.97 7.97 0 0 0 3.24-2.27c.838-1.028 1.37-2.277 1.53-3.596.082-.665.063-1.34-.054-1.999.576-.78 1.01-1.665 1.282-2.61.627-2.168.282-4.553-.946-6.43-.597-.916-1.37-1.706-2.271-2.2" fill="#D97757"/></svg>
+          Claude
+        </div>
+        <div class="ai-logo-tile">
+          <!-- Gemini icon -->
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 24A14.304 14.304 0 0 0 0 12 14.304 14.304 0 0 0 12 0a14.305 14.305 0 0 0 12 12 14.305 14.305 0 0 0-12 12" fill="url(#gemini-grad)"/><defs><linearGradient id="gemini-grad" x1="0" y1="24" x2="24" y2="0" gradientUnits="userSpaceOnUse"><stop stop-color="#1C69FF"/><stop offset="1" stop-color="#C850F0"/></linearGradient></defs></svg>
+          Gemini
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing">
+  <div class="container">
+    <span class="section-eyebrow">Pricing</span>
+    <h2>€29.99 a month. No enterprise contract. No agency.</h2>
+    <p class="section-sub">Wren is built for the business owner who wants straightforward answers at a price that makes sense - not a marketing team with a dedicated budget.</p>
+    <div class="pricing-toggle">
+      <button class="toggle-btn active" id="toggleMonthly" onclick="setPricingPeriod('monthly')">Monthly</button>
+      <button class="toggle-btn" id="toggleAnnual" onclick="setPricingPeriod('annual')">Annual <span class="toggle-save">save €60</span></button>
+    </div>
+    <div class="pricing-grid">
+      <div class="price-card">
+        <div class="price-tier">Free</div>
+        <div class="price-amount"><sup>€</sup>0</div>
+        <div class="price-period">No credit card · No account</div>
+        <div style="height:36px"></div>
+        <ul class="price-features">
+          <li>Whether you're mentioned by each AI system</li>
+          <li>Your headline finding - even if it's bad news</li>
+          <li>Accuracy fact-check, when something's wrong</li>
+          <li>Your closest competitor, named</li>
+          <li>Whether AI used your own website as a source</li>
+          <li>A few quick tips you can act on today</li>
+        </ul>
+        <a href="#cta" class="btn-outline">Run a free audit</a>
+      </div>
+      <div class="price-card featured">
+        <div class="price-featured-tag">Most popular</div>
+        <div class="price-tier">Standard</div>
+        <div class="price-amount"><sup>€</sup><span id="priceAmount">29.99</span></div>
+        <div class="price-period" id="pricePeriod">per month</div>
+        <div class="price-early" id="priceAnnualNote" style="display:none">€299.90 billed annually · 2 months free</div>
+        <div class="price-early" id="priceFounder">Founding Member: locked in for life at this price</div>
+        <ul class="price-features">
+          <li>Everything in Free</li>
+          <li>Full competitor rankings &amp; comparison, including why they're winning</li>
+          <li>Cross-AI disagreement - where ChatGPT, Claude &amp; Gemini don't agree</li>
+          <li>The exact questions we asked AI, word for word</li>
+          <li>Sources &amp; full AI response evidence</li>
+          <li>A few simple fixes every audit - not everything on day one, with exact instructions when it's technical</li>
+          <li>No dashboard to master. Just a short list of tasks, every time you check in.</li>
+          <li>Audit other products or services individually</li>
+          <li>Audit history &amp; weekly re-runs</li>
+          <li>EU &amp; UK data only - stored on European servers</li>
+        </ul>
+        <a href="#cta" class="btn-navy">Get early access</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EAGLE -->
+<section id="eagle">
+  <div class="container">
+    <a href="/site-preview/eagle" class="eagle-band">
+      <div>
+        <span class="eagle-kicker">New from WingLift</span>
+        <h2>Meet Eagle - your website, your code, your dashboard.</h2>
+        <p>Eagle turns Wren's findings into approved fixes: website edits, FAQs, review replies and social posts, published on the site you already have. Your developer works for you again. €99 a month, everything included.</p>
+      </div>
+      <span class="eagle-btn">Discover Eagle &rarr;</span>
+    </a>
+  </div>
+</section>
+
+<!-- ARTICLES -->
+<section id="articles">
+  <div class="container">
+    <span class="section-eyebrow">From the blog</span>
+    <h2>What every business owner needs to know about AI search</h2>
+    <p class="section-sub">Practical, no-jargon guides on why AI recommendations are replacing Google for millions of customers - and what you can do today to make sure your business is in the conversation.</p>
+    <div class="articles-grid">
+
+      <article class="article-card">
+        <div class="article-tag">Guide</div>
+        <h3 class="article-title">What is AI Visibility - and why it matters more than Google rank</h3>
+        <p class="article-excerpt">ChatGPT, Claude and Gemini now answer millions of "where should I go?" questions every day. If you're not in those answers, you're invisible to a growing slice of customers - and no SEO tool will tell you.</p>
+        <div class="article-meta">
+          <span class="article-date">October 2026</span>
+          <a href="#cta" class="article-cta">Read →</a>
+        </div>
+      </article>
+
+      <article class="article-card">
+        <div class="article-tag">How-to</div>
+        <h3 class="article-title">5 things you can do today to get your business mentioned by ChatGPT</h3>
+        <p class="article-excerpt">From Google Business Profile completeness to schema markup - the practical fixes that move the needle on AI mention share, ranked by impact.</p>
+        <div class="article-meta">
+          <span class="article-date">October 2026</span>
+          <a href="#cta" class="article-cta">Read →</a>
+        </div>
+      </article>
+
+      <article class="article-card">
+        <div class="article-tag">Research</div>
+        <h3 class="article-title">We audited 50 SMEs across the EU against three AI systems - here's what we found</h3>
+        <p class="article-excerpt">Only 34% appeared in all three AI systems. The businesses that did weren't spending more on marketing - they were doing a few specific, fixable things differently. The gap is closing fast.</p>
+        <div class="article-meta">
+          <span class="article-date">September 2026</span>
+          <a href="#cta" class="article-cta">Read →</a>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="container" style="text-align:center">
+    <span class="section-eyebrow">Common questions</span>
+    <h2>Everything you need to know</h2>
+  </div>
+  <div class="faq-list">
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">What does "AI visibility" actually mean?</button>
+      <div class="faq-a">When someone asks ChatGPT, Claude or Gemini for a recommendation - "best bakery near me", "who does kitchen renovations in Cork?" - they get an AI-generated answer. AI visibility is whether your business appears in those answers, and what it says about you.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">How is this different from Google SEO?</button>
+      <div class="faq-a">Traditional SEO gets you ranking in Google search results. AI visibility is about what ChatGPT, Claude and Gemini say when someone asks them a direct question - a completely different data source, with different rules. Many businesses with strong Google rankings are invisible in AI, and vice versa. Wren focuses entirely on AI visibility, not SEO.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">Do I need a website or Google listing?</button>
+      <div class="faq-a">No - you just need a business name and location. That said, having an up-to-date website and Google Business Profile significantly improves your AI visibility, which is why Wren checks both as part of its fix recommendations.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">What does Founding Member status include?</button>
+      <div class="faq-a">The first 50 monthly subscribers and first 50 annual subscribers on the Standard plan qualify as Founding Members (100 in total). Status is confirmed when your paid subscription activates at launch, not when you join the early access list. Founding Members get priority support (a direct line, not a ticket queue), early access to every new feature before anyone else, and their price locked in for life. We'll confirm your status by email within 24 hours of your subscription activating.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">When do you launch?</button>
+      <div class="faq-a">We're in final development and targeting a launch in late 2026. Everyone on the early access list gets in first, with their Founding Member details confirmed, before the public launch goes live.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">Is my data safe?</button>
+      <div class="faq-a">Yes. Your data is stored on European servers and never sold or shared with third parties. We collect only what's needed to run the service: your email address and the business name you enter for an audit. You can request deletion at any time via our <a href="#" onclick="openPrivacy();return false;">Privacy Policy</a> contact details.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">What if AI says nothing about my business at all?</button>
+      <div class="faq-a">That's actually the most common result - and the most fixable. If ChatGPT, Claude and Gemini don't mention your business, it usually means you're not yet appearing in the sources those AI systems draw from. Wren identifies exactly what's missing and gives you a short list of fixes, most of which take under an hour to implement. Businesses that follow the recommendations typically start appearing in AI answers within a few weeks.</div>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section id="cta">
+  <div class="container">
+    <span class="section-eyebrow" style="color:rgba(227,167,47,0.8)">50 monthly + 50 annual Founding Member spots</span>
+    <h2>Find out what AI says about your business - before your customers do</h2>
+    <p>Start with a free audit - no account, no card required. Run a live example on your own company and see exactly what ChatGPT, Claude and Gemini say about you, before you commit to anything.</p>
+    <p style="margin-top: 10px; font-size: 0.95rem; color: rgba(255,255,255,0.75);">The first 50 monthly and first 50 annual Standard plan subscribers get <strong style="color:#E3A72F">Founding Member status</strong>: priority support, early access to every new feature, your price locked in for life, and a direct line to the team.</p>
+    <div class="cta-signup" id="ctaForm">
+      <input type="email" id="ctaEmail" placeholder="Your business email" autocomplete="email">
+      <button class="btn-gold" onclick="handleSignup('ctaEmail','ctaConfirm','ctaForm','ctaConsent')">Claim my spot</button>
+    </div>
+    <label class="consent-label consent-label-dark">
+      <input type="checkbox" id="ctaConsent">
+      <span>Yes, reserve my Founding Member spot and keep me posted on WingLift. <a href="#" onclick="openPrivacy();return false;">Privacy Policy</a> &middot; <a href="#" onclick="openFounderTerms();return false;">Founding Member Terms</a>.</span>
+    </label>
+    <div class="cta-confirm" id="ctaConfirm">✓ You're on the list! Watch your inbox around launch.</div>
+    <p class="cta-note">No spam. Unsubscribe any time. Founding Member status is confirmed when your paid subscription activates at launch. <a href="#" onclick="openFounderTerms();return false;" style="color:rgba(255,255,255,0.5);text-decoration:underline">Full terms</a>.</p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <a href="#" class="footer-logo">
+      <svg viewBox="0 0 56 72" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M8 68 C8 68 6 52 18 28 C26 12 36 4 40 2 C40 2 34 8 30 22 C24 42 22 62 22 68 Z" fill="#fff" opacity="0.9"/>
+        <path d="M18 70 C18 70 20 54 32 32 C40 16 50 8 54 6 C54 6 46 14 42 28 C36 48 34 66 34 70 Z" fill="#7B9ED9"/>
+        <path d="M26 72 C26 72 34 60 44 46 C50 38 56 32 56 32 C56 32 50 40 46 50 C40 62 38 72 38 72 Z" fill="#E3A72F"/>
+      </svg>
+      <span class="footer-wordmark">WingLift</span>
+    </a>
+    <ul class="footer-links">
+      <li><a href="/site-preview/eagle">Eagle</a></li>
+      <li><a href="#how">How it works</a></li>
+      <li><a href="#pricing">Pricing</a></li>
+      <li><a href="#articles">Articles</a></li>
+      <li><a href="#faq">FAQ</a></li>
+      <li><a href="https://irishAiconsultancy.ie" target="_blank" rel="noopener">Enterprise</a></li>
+      <li><a href="mailto:info@winglift.io">Contact</a></li>
+    </ul>
+    <div class="footer-social">
+      <!-- Facebook -->
+      <a href="https://www.facebook.com/people/WingLiftai/61595700029586/" target="_blank" rel="noopener" aria-label="WingLift on Facebook">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="#1877F2" role="img" xmlns="http://www.w3.org/2000/svg"><title>Facebook</title><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+      </a>
+      <!-- Instagram -->
+      <a href="https://www.instagram.com/wingliftai/" target="_blank" rel="noopener" aria-label="WingLift on Instagram">
+        <svg width="20" height="20" viewBox="0 0 24 24" role="img" xmlns="http://www.w3.org/2000/svg"><title>Instagram</title><defs><radialGradient id="ig-grad" cx="30%" cy="107%" r="150%"><stop offset="0%" stop-color="#fdf497"/><stop offset="5%" stop-color="#fdf497"/><stop offset="45%" stop-color="#fd5949"/><stop offset="60%" stop-color="#d6249f"/><stop offset="90%" stop-color="#285AEB"/></radialGradient></defs><path fill="url(#ig-grad)" d="M12 0C8.74 0 8.333.015 7.053.072 5.775.132 4.905.333 4.14.63c-.789.306-1.459.717-2.126 1.384S.935 3.35.63 4.14C.333 4.905.131 5.775.072 7.053.012 8.333 0 8.74 0 12c0 3.259.014 3.668.072 4.948.06 1.277.261 2.148.558 2.913.306.788.717 1.459 1.384 2.126.667.666 1.336 1.079 2.126 1.384.766.296 1.636.499 2.913.558C8.333 23.988 8.74 24 12 24c3.259 0 3.668-.014 4.948-.072 1.277-.06 2.148-.262 2.913-.558.788-.306 1.459-.718 2.126-1.384.666-.667 1.079-1.335 1.384-2.126.296-.765.499-1.636.558-2.913.06-1.28.072-1.689.072-4.948 0-3.259-.014-3.667-.072-4.947-.06-1.277-.262-2.149-.558-2.913-.306-.789-.718-1.459-1.384-2.126C21.319 1.347 20.651.935 19.86.63c-.765-.297-1.636-.499-2.913-.558C15.667.012 15.26 0 12 0zm0 2.16c3.203 0 3.585.016 4.85.071 1.17.055 1.805.249 2.227.415.562.217.96.477 1.382.896.419.42.679.819.896 1.381.164.422.36 1.057.413 2.227.057 1.266.07 1.646.07 4.85s-.015 3.585-.074 4.85c-.061 1.17-.256 1.805-.421 2.227-.224.562-.479.96-.899 1.382-.419.419-.824.679-1.38.896-.42.164-1.065.36-2.235.413-1.274.057-1.649.07-4.859.07-3.211 0-3.586-.015-4.859-.074-1.171-.061-1.816-.256-2.236-.421-.569-.224-.96-.479-1.379-.899-.421-.419-.69-.824-.9-1.38-.165-.42-.359-1.065-.42-2.235-.045-1.26-.061-1.649-.061-4.844 0-3.196.016-3.586.061-4.861.061-1.17.255-1.814.42-2.234.21-.57.479-.96.9-1.381.419-.419.81-.689 1.379-.898.42-.166 1.051-.361 2.221-.421 1.275-.045 1.65-.06 4.859-.06l.045.03zm0 3.678c-3.405 0-6.162 2.76-6.162 6.162 0 3.405 2.76 6.162 6.162 6.162 3.405 0 6.162-2.76 6.162-6.162 0-3.405-2.76-6.162-6.162-6.162zM12 16c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm7.846-10.405c0 .795-.646 1.44-1.44 1.44-.795 0-1.44-.646-1.44-1.44 0-.794.646-1.439 1.44-1.439.793-.001 1.44.645 1.44 1.439z"/></svg>
+      </a>
+      <!-- LinkedIn -->
+      <a href="https://linkedin.com/company/wingliftai" target="_blank" rel="noopener" aria-label="WingLift on LinkedIn">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="#0A66C2" role="img" xmlns="http://www.w3.org/2000/svg"><title>LinkedIn</title><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+      </a>
+      <!-- YouTube -->
+      <a href="https://www.youtube.com/@wingliftai" target="_blank" rel="noopener" aria-label="WingLift on YouTube">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="#FF0000" role="img" xmlns="http://www.w3.org/2000/svg"><title>YouTube</title><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+      </a>
+    </div>
+    <p class="footer-copy">© 2026 WingLift · Built in Dublin · Serving EU &amp; UK</p>
+    <p class="footer-legal">WingLift is a trading name of Shape Size or Form Ltd · Company No. 447780 · Registered in Dublin, Ireland · Registered office: Talent Garden, D.C.U. Alpha, Finglas Road Old, Dublin 11, D11 YNR2 · <a href="#" onclick="openPrivacy();return false;">Privacy Policy</a> · <a href="#" onclick="openPrivacy('pm-cookies');return false;">Cookie Policy</a></p>
+  </div>
+</footer>
+
+<!-- PRIVACY & COOKIE POLICY MODAL -->
+<div id="privacy-modal" role="dialog" aria-modal="true" aria-label="Privacy and Cookie Policy" onclick="if(event.target===this)closePrivacy()">
+  <div class="privacy-modal-box">
+    <button class="privacy-modal-close" onclick="closePrivacy()" aria-label="Close">&#x2715;</button>
+
+    <h1>Privacy &amp; Cookie Policy</h1>
+    <p class="pm-updated">Last updated: October 2026 &middot; Version 1.0</p>
+
+    <div class="pm-highlight"><p><strong>Summary:</strong> WingLift collects only the data needed to run the service. We don't sell your data. Everything is stored on European servers. You can request deletion at any time by emailing <a href="mailto:info@winglift.io">info@winglift.io</a>.</p></div>
+
+    <h2>1. Who we are</h2>
+    <p>WingLift is a trading name of <strong>Shape Size or Form Ltd</strong>, registered in Ireland. We operate <a href="https://winglift.io/">winglift.io</a> and the Wren AI Visibility Audit tool. For EU GDPR and UK GDPR purposes, Shape Size or Form Ltd is the <strong>data controller</strong>.</p>
+    <p><strong>Contact:</strong> <a href="mailto:info@winglift.io">info@winglift.io</a></p>
+
+    <h2>2. What data we collect</h2>
+    <h3>Information you give us</h3>
+    <ul>
+      <li><strong>Email address</strong> - when you join the early access list or create an account.</li>
+      <li><strong>Business information</strong> - business name, category and location entered when running an audit.</li>
+    </ul>
+    <h3>Information collected automatically</h3>
+    <ul>
+      <li><strong>Usage data</strong> - pages visited, features used, time on site (analytics cookies only, if accepted).</li>
+      <li><strong>Technical data</strong> - IP address, browser type, device type, referring URL. Held in server logs for up to 30 days.</li>
+    </ul>
+    <h3>What we do NOT collect</h3>
+    <ul>
+      <li>Payment card numbers (handled by a PCI-compliant third party).</li>
+      <li>Sensitive personal data under Article 9 GDPR.</li>
+      <li>Advertising profiles. We do not sell data.</li>
+    </ul>
+
+    <h2>3. Why we use your data (legal bases)</h2>
+    <table class="pm-table">
+      <tr><th>Purpose</th><th>Legal basis</th></tr>
+      <tr><td>Running the audit and delivering your report</td><td>Performance of a contract (Art. 6(1)(b))</td></tr>
+      <tr><td>Sending early access and launch emails</td><td>Consent (Art. 6(1)(a))</td></tr>
+      <tr><td>Managing your account and subscription</td><td>Performance of a contract (Art. 6(1)(b))</td></tr>
+      <tr><td>Product improvement (aggregate analytics)</td><td>Legitimate interests (Art. 6(1)(f))</td></tr>
+      <tr><td>Legal compliance and fraud prevention</td><td>Legal obligation (Art. 6(1)(c))</td></tr>
+    </table>
+
+    <h2>4. Where your data is stored</h2>
+    <p>All personal data is stored on servers within the <strong>European Economic Area (EEA)</strong>. We do not transfer data outside the EEA or the United Kingdom. The UK ICO has confirmed EEA countries provide adequate protection for UK residents, so EU servers are fully compliant for UK client data.</p>
+
+    <h2 id="pm-cookies">5. Cookies</h2>
+    <h3>Essential cookies (always on)</h3>
+    <table class="pm-table">
+      <tr><th>Name</th><th>Purpose</th><th>Duration</th></tr>
+      <tr><td>wl_cookies</td><td>Remembers your cookie preference</td><td>12 months</td></tr>
+      <tr><td>wl_signup</td><td>Remembers you've joined the early access list</td><td>12 months</td></tr>
+    </table>
+    <h3>Analytics cookies (optional - only if you click Accept all)</h3>
+    <table class="pm-table">
+      <tr><th>Provider</th><th>Purpose</th><th>Duration</th></tr>
+      <tr><td>Analytics (anonymised)</td><td>Page views, referral source, session length</td><td>Up to 24 months</td></tr>
+    </table>
+    <p>To reset your cookie choice, clear site data for winglift.io in your browser settings - the banner will reappear on your next visit.</p>
+
+    <h2>6. How long we keep your data</h2>
+    <table class="pm-table">
+      <tr><th>Data type</th><th>Retention</th></tr>
+      <tr><td>Early access email addresses</td><td>Until launch + 6 months, or until you unsubscribe</td></tr>
+      <tr><td>Account data</td><td>Duration of account + 2 years after deletion</td></tr>
+      <tr><td>Audit results (Standard plan)</td><td>12 months rolling history</td></tr>
+      <tr><td>Server logs</td><td>30 days</td></tr>
+      <tr><td>Financial records</td><td>7 years (Irish legal requirement)</td></tr>
+    </table>
+
+    <h2>7. Your rights</h2>
+    <p>Under EU GDPR and UK GDPR you have the right to access, correct, delete, restrict or port your data, and to object to processing or withdraw consent at any time. Email <a href="mailto:info@winglift.io">info@winglift.io</a> and we will respond within 30 days.</p>
+    <p>If you are unsatisfied, EU residents may contact the <a href="https://www.dataprotection.ie" target="_blank" rel="noopener">Irish Data Protection Commission</a>. UK residents may contact the <a href="https://ico.org.uk" target="_blank" rel="noopener">ICO</a>.</p>
+
+    <h2>8. Third-party services</h2>
+    <ul>
+      <li><strong>Cloudflare</strong> - DNS and CDN. Does not receive your personal data.</li>
+      <li><strong>AI providers</strong> (OpenAI, Anthropic, Google) - receive your business name and category to run the audit. Your email is never shared with them.</li>
+      <li><strong>Payment processor</strong> - handles billing for Standard plan. Card details are never seen or stored by WingLift.</li>
+    </ul>
+    <p>We do not use advertising networks, data brokers or social media tracking pixels.</p>
+
+    <h2>9. Contact</h2>
+    <p>Shape Size or Form Ltd, trading as WingLift &middot; Ireland &middot; <a href="mailto:info@winglift.io">info@winglift.io</a></p>
+
+    <p style="margin-top:28px;text-align:center"><button onclick="closePrivacy()" style="background:var(--navy);color:#fff;border:none;padding:10px 32px;border-radius:8px;font-size:0.95rem;cursor:pointer;font-family:inherit">Close</button></p>
+  </div>
+</div>
+
+<!-- FOUNDING MEMBER T&Cs MODAL -->
+<div id="founder-modal" role="dialog" aria-modal="true" aria-label="Founding Member Terms and Conditions" onclick="if(event.target===this)closeFounderTerms()">
+  <div class="privacy-modal-box">
+    <button class="privacy-modal-close" onclick="closeFounderTerms()" aria-label="Close">&#x2715;</button>
+
+    <h1>Founding Member Terms</h1>
+    <p class="pm-updated">Last updated: October 2026 &middot; Version 1.0</p>
+
+    <div class="pm-highlight"><p><strong>Summary:</strong> The first 50 monthly subscribers and first 50 annual subscribers on the Standard plan qualify as Founding Members. Perks are locked in for as long as you stay subscribed.</p></div>
+
+    <h2>1. Who qualifies</h2>
+    <p>Founding Member status is available to the first <strong>50 customers</strong> who start a monthly Standard plan subscription and the first <strong>50 customers</strong> who start an annual Standard plan subscription (100 Founding Members in total). Qualifying is determined by the date and time your paid subscription is confirmed.</p>
+    <p>Joining the early access list does not guarantee Founding Member status. Spots are allocated when your subscription is activated at launch.</p>
+
+    <h2>2. Founding Member perks</h2>
+    <ul>
+      <li><strong>Price locked for life</strong> - your subscription price is fixed at the rate you sign up at, for as long as you remain subscribed. Future price increases do not apply to you.</li>
+      <li><strong>Priority support</strong> - your queries go to the front of the queue. We aim to respond to Founding Members within one business day.</li>
+      <li><strong>Early access to every new feature</strong> - you get access to new WingLift features before they are released to the general user base.</li>
+      <li><strong>Direct line to the team</strong> - Founding Members receive a dedicated contact channel to share feedback, flag issues, and speak directly with the WingLift team.</li>
+    </ul>
+
+    <h2>3. Keeping your Founding Member status</h2>
+    <p>Your Founding Member perks remain active for as long as your subscription remains continuous and in good standing. If you cancel your subscription and later re-subscribe, Founding Member status will not be reinstated, as your original spot will have been reallocated.</p>
+    <p>Upgrading or downgrading between monthly and annual billing does not affect your status, provided the subscription remains uninterrupted.</p>
+
+    <h2>4. Confirmation</h2>
+    <p>You will receive a confirmation email at launch confirming your Founding Member status, the price locked in for your account, and details of how to access your perks. If you do not receive this email within 24 hours of your subscription being activated, contact us at <a href="mailto:info@winglift.io">info@winglift.io</a>.</p>
+
+    <h2>5. Changes to these terms</h2>
+    <p>WingLift (trading name of Shape Size or Form Ltd, registered in Ireland) reserves the right to amend these terms. Where changes affect existing Founding Members, we will give at least 30 days' notice by email. Continued use of the service after that date constitutes acceptance of the revised terms.</p>
+
+    <h2>6. Contact</h2>
+    <p>Shape Size or Form Ltd, trading as WingLift &middot; Ireland &middot; <a href="mailto:info@winglift.io">info@winglift.io</a></p>
+
+    <p style="margin-top:28px;text-align:center"><button onclick="closeFounderTerms()" style="background:var(--navy);color:#fff;border:none;padding:10px 32px;border-radius:8px;font-size:0.95rem;cursor:pointer;font-family:inherit">Close</button></p>
+  </div>
+</div>
+
+<!-- COOKIE CONSENT BANNER -->
+<div id="cookie-banner" role="dialog" aria-label="Cookie consent">
+  <span>We use essential cookies to keep the site working. With your permission we'd also like to set analytics cookies to understand how you use WingLift. See our <a href="#" onclick="openPrivacy('pm-cookies');return false;">Cookie &amp; Privacy Policy</a>.</span>
+  <div class="cookie-actions">
+    <button class="btn-cookie-accept" onclick="acceptCookies()">Accept all</button>
+    <button class="btn-cookie-decline" onclick="declineCookies()">Essential only</button>
+  </div>
+</div>
+
+<script>
+function openPrivacy(sectionId) {
+  const modal = document.getElementById('privacy-modal');
+  modal.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  if (sectionId) {
+    setTimeout(() => {
+      const el = document.getElementById(sectionId);
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 80);
+  } else {
+    modal.scrollTop = 0;
+  }
+}
+function closePrivacy() {
+  document.getElementById('privacy-modal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') { closePrivacy(); closeFounderTerms(); } });
+function openFounderTerms() {
+  const modal = document.getElementById('founder-modal');
+  modal.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  modal.scrollTop = 0;
+}
+function closeFounderTerms() {
+  document.getElementById('founder-modal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function setPricingPeriod(period) {
+  const amount = document.getElementById('priceAmount');
+  const pricePeriod = document.getElementById('pricePeriod');
+  const annualNote = document.getElementById('priceAnnualNote');
+  const monthlyBtn = document.getElementById('toggleMonthly');
+  const annualBtn = document.getElementById('toggleAnnual');
+  if (period === 'annual') {
+    amount.innerHTML = '24<sup style="font-size:0.55em;vertical-align:super">.99</sup>';
+    pricePeriod.textContent = 'per month, billed annually';
+    annualNote.style.display = 'block';
+    monthlyBtn.classList.remove('active');
+    annualBtn.classList.add('active');
+  } else {
+    amount.innerHTML = '29<sup style="font-size:0.55em;vertical-align:super">.99</sup>';
+    pricePeriod.textContent = 'per month';
+    annualNote.style.display = 'none';
+    monthlyBtn.classList.add('active');
+    annualBtn.classList.remove('active');
+  }
+}
+// Init monthly display with small .99
+document.addEventListener('DOMContentLoaded', function() {
+  var el = document.getElementById('priceAmount');
+  if (el) el.innerHTML = '29<sup style="font-size:0.55em;vertical-align:super">.99</sup>';
+});
+
+function handleSignup(inputId, confirmId, formId, consentId) {
+  const input = document.getElementById(inputId);
+  const confirm = document.getElementById(confirmId);
+  const form = document.getElementById(formId);
+  const consent = consentId ? document.getElementById(consentId) : null;
+
+  if (!input.value || !input.value.includes('@')) {
+    input.focus();
+    input.style.borderColor = '#E36B4A';
+    setTimeout(() => { input.style.borderColor = ''; }, 1500);
+    return;
+  }
+  if (consent && !consent.checked) {
+    consent.parentElement.style.color = '#E36B4A';
+    setTimeout(() => { consent.parentElement.style.color = ''; }, 2000);
+    return;
+  }
+  const email = input.value.trim();
+  if (form) form.style.display = 'none';
+  confirm.style.display = 'block';
+  // Preview copy: signups are not stored or sent anywhere.
+}
+
+function toggleFaq(btn) {
+  const item = btn.closest('.faq-item');
+  const wasOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item.open').forEach(el => el.classList.remove('open'));
+  if (!wasOpen) item.classList.add('open');
+}
+
+// Pre-fill confirmation if already signed up
+try {
+  if (false) {
+    document.getElementById('heroForm').style.display = 'none';
+    document.getElementById('heroConfirm').style.display = 'block';
+  }
+} catch(e) {}
+
+// Cookie consent
+function acceptCookies() {
+  try { localStorage.setItem('wl_cookies', 'accepted'); } catch(e) {}
+  document.getElementById('cookie-banner').style.display = 'none';
+}
+function declineCookies() {
+  try { localStorage.setItem('wl_cookies', 'essential'); } catch(e) {}
+  document.getElementById('cookie-banner').style.display = 'none';
+}
+try {
+  if (localStorage.getItem('wl_cookies')) {
+    document.getElementById('cookie-banner').style.display = 'none';
+  }
+} catch(e) {}
+</script>
+</body>
+</html>
