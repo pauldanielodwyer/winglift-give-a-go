@@ -415,6 +415,8 @@ hr.sep { border: 0; border-top: 1px solid var(--border); margin: 16px 0; }
 /* ── Team ── */
 .member { display: flex; align-items: center; gap: 12px; padding: 12px 0; }
 .member .av { width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; font-weight: 700; color: #fff; flex-shrink: 0; }
+.member > div { min-width: 0; overflow-wrap: anywhere; }
+.member .chip { flex-shrink: 0; }
 .perm-tbl { width: 100%; border-collapse: collapse; font-size: .86rem; }
 .perm-tbl th, .perm-tbl td { padding: 9px 10px; border-bottom: 1px solid var(--border); text-align: left; }
 .perm-tbl th { font-size: .72rem; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
@@ -475,7 +477,7 @@ hr.sep { border: 0; border-top: 1px solid var(--border); margin: 16px 0; }
 /* ── Responsive ── */
 @media (max-width: 1100px) {
   .g-3 { grid-template-columns: 1fr 1fr; }
-  .g-main, .chat-wrap { grid-template-columns: 1fr; }
+  .g-main, .chat-wrap { grid-template-columns: minmax(0, 1fr); }
   .role-label { display: none; }
 }
 @media (max-width: 860px) {
@@ -492,6 +494,10 @@ hr.sep { border: 0; border-top: 1px solid var(--border); margin: 16px 0; }
   .msg { max-width: 92%; }
 }
 @media (max-width: 560px) {
+  .perm-tbl th, .perm-tbl td { padding: 8px 6px; }
+  .card:has(table) { overflow-x: auto; }
+  .member { flex-wrap: wrap; }
   .topbar-title { display: none; }
   .role-switch button { padding: 5px 7px; font-size: .74rem; }
 }
+.grid > * { min-width: 0; }

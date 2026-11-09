@@ -50,6 +50,7 @@
     S.invites = [];
     S.rr = { name: 'Sarah', channel: 'whatsapp' };
     S.wa = { nudge: null, review: null, extra: [] };
+    S.wa.enquiry = null;
     S.seq = 100;
   }
   resetState();
@@ -59,15 +60,17 @@
   const OWNER_NAV = [
     { group: 'Overview' },
     { r: 'home', label: 'Dashboard', ico: 'home' },
-    { r: 'audit', label: 'AI audit report', ico: 'report' },
+    { r: 'whatsapp', label: 'WhatsApp', ico: 'phone' },
+    { r: 'enquiries', label: 'Enquiries', ico: 'send', badge: 'enquiries' },
     { r: 'approvals', label: 'Approval queue', ico: 'check', badge: 'approvals' },
+    { r: 'audit', label: 'AI audit report', ico: 'report' },
     { group: 'Agents' },
     { r: 'vibe', label: 'Vibe Update Agent', ico: 'chat' },
     { r: 'faq', label: 'FAQ manager', ico: 'faq' },
     { r: 'reviews', label: 'Reviews', ico: 'star', badge: 'reviews' },
     { r: 'social', label: 'Social', ico: 'share' },
-    { r: 'whatsapp', label: 'WhatsApp', ico: 'phone' },
     { group: 'Account' },
+    { r: 'site', label: 'My website', ico: 'globe' },
     { r: 'team', label: 'Team', ico: 'users' },
     { r: 'billing', label: 'Plan & billing', ico: 'card' }
   ];
@@ -80,13 +83,14 @@
   const DEV_ROUTES = ['developer', 'audit', 'faq'];
   const TITLES = {
     home: 'Dashboard', vibe: 'Vibe Update Agent', approvals: 'Approval queue', faq: 'FAQ manager', reviews: 'Reviews',
-    social: 'Social manager', whatsapp: 'WhatsApp', team: 'Team', audit: 'AI audit report', billing: 'Plan & billing', developer: 'Developer workspace'
+    social: 'Social manager', whatsapp: 'WhatsApp', enquiries: 'Enquiries', site: 'My website', team: 'Team', audit: 'AI audit report', billing: 'Plan & billing', developer: 'Developer workspace'
   };
 
   function counts() {
     return {
       approvals: S.approvals.length,
-      reviews: S.reviews.filter((r) => !r.replied).length
+      reviews: S.reviews.filter((r) => !r.replied).length,
+      enquiries: S.enquiries.filter((e) => !e.done).length
     };
   }
 
@@ -198,11 +202,17 @@
       <div class="hero-card">
         <div style="flex:1;min-width:260px">
           <h1>Good morning, ${S.owner.first}</h1>
-          <p>Here’s what ChatGPT, Claude and Gemini are saying about ${esc(S.business.short)} this week.</p>
+          <p>Here’s your Eagle-eye view of ${esc(S.business.short)} this week. Most of this also comes to you on WhatsApp.</p>
         </div>
         <a href="#/vibe" class="btn btn-gold">${icon('chat')} Update my website</a>
         <a href="#/audit" class="btn" style="background:transparent;color:#fff">Full audit report</a>
       </div>
+
+      ${c.enquiries ? `<div class="approve-strip" style="background:var(--red-soft);border-color:#F3C9C9">
+        <span class="big">${c.enquiries}</span>
+        <div style="flex:1"><strong>new enquir${c.enquiries === 1 ? 'y' : 'ies'} waiting</strong><div class="small muted">Replies drafted. Call back, send reply or done.</div></div>
+        <a href="#/enquiries" class="btn btn-primary">Open enquiries</a>
+      </div>` : ''}
 
       ${c.approvals ? `<div class="approve-strip">
         <span class="big">${c.approvals}</span>
@@ -238,10 +248,11 @@
           <div class="card">
             <div class="card-head"><h2>Quick actions</h2></div>
             <div class="stack">
+              <a href="#/enquiries" class="btn" style="width:100%;justify-content:flex-start">${icon('send')} Answer my enquiries</a>
               <a href="#/vibe" class="btn" style="width:100%;justify-content:flex-start">${icon('chat')} Change something on my website</a>
               <a href="#/reviews" class="btn" style="width:100%;justify-content:flex-start">${icon('star')} Ask a customer for a review</a>
               <a href="#/whatsapp" class="btn" style="width:100%;justify-content:flex-start">${icon('phone')} See Eagle on WhatsApp</a>
-              <a href="#/team" class="btn" style="width:100%;justify-content:flex-start">${icon('users')} Invite my developer</a>
+              <a href="#/site" class="btn" style="width:100%;justify-content:flex-start">${icon('globe')} My website, history &amp; handover</a>
             </div>
           </div>
         </div>
@@ -684,10 +695,100 @@
     return mi >= 0 ? `2026-${String(mi + 1).padStart(2, '0')}-${m[1].padStart(2, '0')}T${m[3]}` : '';
   }
 
+  /* Enquiries */
+  SCREENS.enquiries = () => {
+    const st = S.enquiryStats;
+    const open = S.enquiries.filter((e) => !e.done);
+    const done = S.enquiries.filter((e) => e.done);
+    const item = (e) => `<div class="card mt-2" style="${e.done ? 'opacity:.6' : ''}">
+        <div class="row"><strong style="flex:1">${esc(e.title)}</strong><span class="chip ${e.cls}">${e.tag}</span></div>
+        <div class="small muted mt-1">${esc(e.name)} · ${esc(e.source)} · ${e.when} · Found you: <strong>${esc(e.found)}</strong></div>
+        <div class="quote small mt-1">“${esc(e.text)}”</div>
+        ${e.done ? `<div class="small mt-1">✓ ${esc(e.done)}</div>` : `<div class="row mt-2" style="flex-wrap:wrap"><button class="btn btn-primary" data-action="enq-call" data-id="${e.id}">Call back</button><button class="btn" data-action="enq-reply" data-id="${e.id}">Send reply</button><button class="btn btn-ghost" data-action="enq-done" data-id="${e.id}">Done</button></div>`}
+      </div>`;
+    return `
+      <div class="page-head"><div><h1>Enquiries</h1><p>Website forms, Google messages, WhatsApp and email in one list. Each one also comes to you on WhatsApp. Three buttons: call back, send reply or done.</p></div></div>
+      <div class="grid g-main">
+        <div>
+          ${open.length ? open.map(item).join('') : `<div class="card empty"><div class="big">✓</div><h3>All caught up</h3><p class="mt-1">No enquiries waiting. We’ll WhatsApp you when a new one arrives.</p></div>`}
+          ${done.length ? `<h3 class="mt-3">Handled today</h3>${done.map(item).join('')}` : ''}
+        </div>
+        <div class="stack">
+          <div class="card"><h3>This month</h3>
+            <div class="price mt-1">${st.month}<small> enquiries</small></div>
+            <ul class="list-plain small mt-1">${[['From your website', st.website], ['From Google', st.google], ['Found you by asking ChatGPT', st.chatgpt], ['From Facebook', st.facebook]].map(([l, n]) => `<li class="row" style="padding:6px 0"><span style="flex:1">${l}</span><strong>${n}</strong></li>`).join('')}</ul>
+          </div>
+          <div class="alert alert-gold small">${icon('alert', 'width="16" height="16"')}<span>If an enquiry is still waiting at 6pm, Eagle reminds you on WhatsApp.</span></div>
+        </div>
+      </div>`;
+  };
+  function enqDone(id, how) { const e = S.enquiries.find((x) => x.id === id); e.done = how; addActivity('good', `Enquiry handled: ${e.title} (${how.toLowerCase()})`); refresh(); }
+  function replyModal(id) {
+    const e = S.enquiries.find((x) => x.id === id);
+    openModal(`<h2>Reply to ${esc(e.name)}</h2><p class="small muted">Drafted from your prices, hours and the towns you cover. Sent by ${e.source === 'Google message' ? 'Google message' : 'email and text'}.</p>
+      <div class="field mt-2"><textarea class="textarea" id="enqText" style="min-height:120px">${esc(e.draft)}</textarea></div>
+      <div class="modal-acts"><button class="btn btn-ghost" data-action="modal-close">Cancel</button><button class="btn btn-primary" data-action="enq-send" data-id="${e.id}">${icon('send')} Send reply</button></div>`);
+  }
+
+  /* My website: preview, handover, history */
+  SCREENS.site = () => {
+    const s = S.site;
+    return `
+      <div class="page-head"><div><h1>My website</h1><p>${esc(s.kind)}. Eagle builds it, you check it, your developer puts it live on hosting in your name.</p></div>
+        <a class="btn btn-primary" href="#/site" data-action="toast" data-msg="Opening ${s.preview} (demo)">${icon('globe')} Open my preview link</a></div>
+      <div class="card"><div class="card-head"><h2>Where you are</h2></div>
+        <ul class="steps">${s.stages.map((t, i) => `<li class="${i < s.stage ? 'done' : ''}"><span class="s" style="${i < s.stage ? 'background:var(--green);border-color:var(--green)' : i === s.stage ? 'border-color:var(--gold)' : ''}"></span>${t}${i === s.stage ? ' <span class="chip chip-amber no-dot">Next</span>' : ''}</li>`).join('')}</ul>
+        ${s.stage < 3 ? `<div class="row mt-2" style="flex-wrap:wrap"><button class="btn btn-primary" data-action="handover">${icon('send')} Send to my developer</button><span class="small muted">One ready-written email with the code, launch guide and redirect list.</span></div>` : `<div class="alert alert-green mt-2 small">Your site is live, AI-ready and yours.</div>`}
+      </div>
+      <div class="grid g-2 mt-2">
+        <div class="card"><div class="card-head"><h2>What Eagle fixed for you</h2></div>
+          <ul class="list-plain small">${s.fixed.map((f) => `<li class="row" style="padding:6px 0"><span class="chip chip-green no-dot">✓</span><span>${esc(f)}</span></li>`).join('')}</ul></div>
+        <div class="card"><div class="card-head"><h2>Needs your decision</h2></div>
+          <ul class="list-plain small">${s.decide.map((f, i) => `<li class="row" style="padding:6px 0"><span style="flex:1">${esc(f)}</span><button class="btn btn-sm" data-action="toast" data-msg="Thanks - Eagle will update the site">Decide</button></li>`).join('')}</ul></div>
+      </div>
+      <div class="grid g-main mt-2">
+        <div class="card"><div class="card-head"><h2>History</h2><span class="sub">${s.versions.length + 9} updates this year</span></div>
+          <ul class="list-plain">${s.versions.map((v, i) => `<li class="row" style="padding:10px 0;border-bottom:1px solid var(--border)"><div style="flex:1"><strong class="small">${esc(v.what)}</strong><div class="tiny muted">${v.when} · ${esc(v.by)}</div></div>${i === 0 ? '<span class="chip chip-green no-dot">Current</span>' : `<button class="btn btn-sm" data-action="restore" data-id="${v.id}">Restore</button>`}</li>`).join('')}</ul></div>
+        <div class="stack">
+          <div class="card"><h3>It’s yours</h3>
+            <dl class="kv mt-1" style="word-break:break-word;overflow-wrap:anywhere"><dt>Code</dt><dd>${esc(s.repo)}</dd><dt>Hosting</dt><dd>In your name, set up by your developer</dd><dt>Domain</dt><dd>${esc(S.business.site)} · registered to you</dd></dl>
+            <button class="btn mt-2" style="width:100%" data-action="toast" data-msg="Downloading your site as a zip (demo)">${icon('down')} Download my site</button>
+          </div>
+        </div>
+      </div>`;
+  };
+  function handoverModal() {
+    const dev = S.team.find((m) => m.role === 'Developer guest');
+    openModal(`<h2>Send to your developer</h2><p class="small muted">We’ve written it for you. Change anything you like.</p>
+      <div class="field mt-2"><label for="hoTo">To</label><input class="input" id="hoTo" value="${dev ? esc(dev.email) : ''}" placeholder="developer@example.ie"></div>
+      <div class="field"><label for="hoMsg">Message</label><textarea class="textarea" id="hoMsg" style="min-height:170px">Hi${dev ? ' ' + esc(dev.name.split(' ')[0]) : ''},
+
+Our new website is ready. Could you put it live on hosting in my name?
+
+Code: ${esc(S.site.repo)}
+Launch guide and redirect list: attached
+Preview: ${esc(S.site.preview)}
+
+Once it's live, please connect it to Eagle using the link in the guide.
+
+Thanks,
+${esc(S.owner.first)}</textarea></div>
+      <div class="modal-acts"><button class="btn btn-ghost" data-action="modal-close">Cancel</button><button class="btn btn-primary" data-action="handover-send">${icon('send')} Send</button></div>`);
+  }
+  function switchDevModal() {
+    const dev = S.team.find((m) => m.role === 'Developer guest');
+    openModal(`<h2>Switch developer</h2><p class="small muted">${esc(dev.name)} loses access straight away. Your site, code and history stay exactly as they are.</p>
+      <div class="field mt-2"><label for="swName">New developer’s name</label><input class="input" id="swName" placeholder="e.g. Pádraig Walsh"></div>
+      <div class="field"><label for="swEmail">Email</label><input class="input" id="swEmail" type="email" placeholder="dev@example.ie"></div>
+      <p class="small muted">They’ll get an invite and a handover pack: code, launch guide, change history and open jobs.</p>
+      <div class="modal-acts"><button class="btn btn-ghost" data-action="modal-close">Cancel</button><button class="btn btn-danger" data-action="switch-send">Remove ${esc(dev.name.split(' ')[0])} &amp; invite</button></div>`);
+  }
+
   /* 7. WhatsApp */
   SCREENS.whatsapp = () => `
-    <div class="page-head"><div><h1>Eagle on WhatsApp</h1><p>Most owners never open the dashboard. They approve things from WhatsApp in between jobs. Tap the buttons to try it.</p></div></div>
+    <div class="page-head"><div><h1>Eagle on WhatsApp</h1><p>WhatsApp is the main way to run Eagle: enquiries, reviews, website changes and approvals, all with a tap or a text. The dashboard is there for the bigger picture. Tap the buttons to try it.</p></div></div>
     <div class="phones">
+      <div class="phone-col"><h3>New enquiry</h3>${phone(waEnquiry(), 'enquiry')}<span class="tiny muted">Sent the moment an enquiry arrives</span></div>
       <div class="phone-col"><h3>Daily suggestion</h3>${phone(waNudge(), 'nudge')}<span class="tiny muted">Template message · sent 08:00 each weekday</span></div>
       <div class="phone-col"><h3>Review alert</h3>${phone(waReview(), 'review')}<span class="tiny muted">Sent within minutes of a new review</span></div>
       <div class="phone-col"><h3>Vibe edit by chat</h3>${phone(waVibe(), 'vibe', true)}<span class="tiny muted">Owner texts a change in plain English</span></div>
@@ -707,6 +808,13 @@
     return `<span class="wa-day">TODAY</span>
       <div class="wa-msg wa-tpl"><div class="tb"><div class="hdr">Today’s suggestion</div>Good morning Declan. ChatGPT is favouring plumbers with recent Google posts. Here’s one ready to go:<br><br><i>“Is your boiler ready for winter? Book your annual service — from €95 inc. VAT. Serving Drogheda &amp; all of Co. Louth.”</i><span class="tm">08:00</span></div>${waBtns('nudge', st, ['Approve', 'Edit', 'Skip'])}</div>
       ${st ? `<div class="wa-msg out">${st}<span class="tm">08:14 ✓✓</span></div><div class="wa-msg">${replies[st].replace(/\n/g, '<br>')}<span class="tm">08:14</span></div>` : ''}`;
+  }
+  function waEnquiry() {
+    const st = S.wa.enquiry;
+    const replies = { 'Call back': 'Calling Gráinne on 087 214 5521… I’ve marked it as handled.', 'Send reply': 'Reply sent to Gráinne. I’ve marked it as handled.', Done: 'Marked as done.' };
+    return `<span class="wa-day">TODAY</span>
+      <div class="wa-msg wa-tpl"><div class="tb"><div class="hdr">New enquiry · urgent</div><b>Leaking pipe</b> - Gráinne W. via your website:<br>“Water coming through the kitchen ceiling. Can someone come today?”<br><br>Reply drafted:<br><i>“Hi Gráinne, turn off the water at the stopcock if you can. Declan can be with you within the hour…”</i><span class="tm">09:32</span></div>${waBtns('enquiry', st, ['Call back', 'Send reply', 'Done'])}</div>
+      ${st ? `<div class="wa-msg out">${st}<span class="tm">09:33 ✓✓</span></div><div class="wa-msg">${replies[st]}<span class="tm">09:33</span></div>` : ''}`;
   }
   function waReview() {
     const st = S.wa.review;
@@ -741,7 +849,7 @@
   /* 8. Team */
   SCREENS.team = () => `
     <div class="page-head"><div><h1>Team</h1><p>Your website, your code, your dashboard — invite your own developer as a guest so they can see what needs doing.</p></div>
-      <div class="row"><button class="btn" data-action="as-dev">Preview developer guest view</button><button class="btn btn-primary" data-action="invite">${icon('plus')} Invite developer</button></div></div>
+      <div class="row"><button class="btn" data-action="as-dev">Preview developer guest view</button>${S.team.length > 1 ? `<button class="btn" data-action="switch-dev">Switch developer</button>` : ''}<button class="btn btn-primary" data-action="invite">${icon('plus')} Invite developer</button></div></div>
     <div class="grid g-main">
       <div class="stack">
         <div class="card">
@@ -756,7 +864,7 @@
           <table class="perm-tbl">
             <thead><tr><th></th><th class="c">Owner</th><th class="c">Developer guest</th></tr></thead>
             <tbody>
-              ${[['See AI audit report & fix list', 1, 1], ['See technical &amp; deploy info', 1, 1], ['Propose site changes', 1, 1], ['Approve &amp; publish changes', 1, 0], ['Reviews, social &amp; WhatsApp', 1, 0], ['Billing &amp; plan', 1, 0], ['Remove people / close account', 1, 0]]
+              ${[['See AI audit report & fix list', 1, 1], ['See technical &amp; deploy info', 1, 1], ['Propose site changes', 1, 1], ['Approve &amp; publish changes', 1, 0], ['Reviews, social &amp; WhatsApp', 1, 0], ['Customer enquiries', 1, 0], ['Billing &amp; plan', 1, 0], ['Remove people / close account', 1, 0]]
                 .map(([l, o, d]) => `<tr><td>${l}</td><td class="c ${o ? 'yes' : 'no'}">${o ? '✓' : '—'}</td><td class="c ${d ? 'yes' : 'no'}">${d ? '✓' : '—'}</td></tr>`).join('')}
             </tbody>
           </table>
@@ -764,11 +872,14 @@
       </div>
       <div class="card">
         <h3>Why invite your developer?</h3>
-        <p class="small mt-1" style="color:var(--fg-soft)">Eagle doesn’t rebuild or host your website, and we never take over your code. Your developer keeps doing the technical work — now with a clear, prioritised list of exactly what AI systems are getting wrong.</p>
+        <p class="small mt-1" style="color:var(--fg-soft)">Eagle builds your site but doesn’t host it or do the setup. Your developer puts it live on hosting in your name and handles the technical side. You stay in charge.</p>
         <ul class="small mt-2" style="padding-left:18px;color:var(--fg-soft)">
+          <li>They get the launch pack for your new site</li>
           <li>They see the audit findings and technical fixes</li>
+          <li>You can give them jobs from the dashboard</li>
           <li>They propose changes; you approve them</li>
-          <li>They never see your billing</li>
+          <li>They never see your billing or your enquiries</li>
+          <li>Switch developer in one click - access removed straight away</li>
         </ul>
       </div>
     </div>`;
@@ -809,6 +920,15 @@
             ${[['robots.txt allows GPTBot, ClaudeBot, Google-Extended', 'green', 'Pass'], ['FAQPage JSON-LD on /faq', 'green', 'Pass'], ['LocalBusiness / Plumber schema', 'red', 'Missing'], ['Opening hours in markup match site', 'amber', 'Mismatch'], ['llms.txt', 'amber', 'Not found'], ['Heat pump service page', 'red', 'Missing'], ['NAP consistency (Golden Pages)', 'red', 'Old address']]
               .map(([l, c, s]) => `<li class="row" style="padding:8px 0"><span style="flex:1">${l}</span><span class="chip chip-${c}">${s}</span></li>`).join('')}
           </ul>
+        </div>
+      </div>
+      <div class="card mt-2"><div class="card-head"><h2>Launch pack: new site</h2><span class="chip chip-amber">Waiting for you</span></div>
+        <p class="small muted">${esc(S.site.kind)}. ${S.owner.first} has approved the preview. Put it live on hosting in ${S.owner.first}’s name, then connect it to Eagle.</p>
+        <div class="row mt-2" style="flex-wrap:wrap">
+          <button class="btn btn-sm" data-action="toast" data-msg="Opening ${S.site.repo} (demo)">${icon('code')} ${esc(S.site.repo)}</button>
+          <button class="btn btn-sm" data-action="toast" data-msg="Launch guide downloaded (demo)">${icon('report')} Launch guide</button>
+          <button class="btn btn-sm" data-action="toast" data-msg="Redirect list downloaded: 23 old links (demo)">${icon('down')} Redirect list</button>
+          <button class="btn btn-sm btn-primary" data-action="toast" data-msg="Marked as live — Eagle will check the site (demo)">Mark as live</button>
         </div>
       </div>
       <div class="grid g-main mt-2">
@@ -902,9 +1022,9 @@
         <p class="mt-2" style="font-family:Manrope;font-weight:700">Your website, your code, your dashboard — your developer works for you again.</p>
         <ul class="incl mt-3">
           <li>Weekly Wren AI audit (ChatGPT, Claude, Gemini)</li><li>Vibe Update Agent</li><li>Unified approval queue</li><li>FAQ manager (5 slots, 3 deploys/week)</li>
-          <li>Google review replies &amp; requests</li><li>Social posts: Meta, LinkedIn, Google</li><li>WhatsApp approvals &amp; alerts</li><li>Free developer guest seats</li>
+          <li>Google review replies &amp; requests</li><li>Social posts: Meta, LinkedIn, Google</li><li>WhatsApp: changes, enquiries &amp; approvals</li><li>Enquiries inbox with drafted replies</li><li>Your finished site + developer launch pack</li><li>Free developer guest seats</li>
         </ul>
-        <div class="alert alert-navy mt-3 small">Eagle is software only. We don’t rebuild or host your website and there’s no code handover — your site stays exactly where it is.</div>
+        <div class="alert alert-navy mt-3 small">Eagle builds your site and hands it to your developer to put live. We don’t host it or charge for setup — hosting is in your name, arranged by your developer.</div>
       </div>
       <div class="stack">
         <div class="card"><h3>Payment method</h3><div class="row mt-2"><span class="chip no-dot">VISA</span><span>•••• 4242 · exp 08/28</span><span class="spacer"></span><button class="btn btn-sm" data-action="toast" data-msg="Card update opened (demo)">Update</button></div></div>
@@ -953,8 +1073,26 @@
     'post-edit': (el) => { S.posts.find((x) => x.id === el.dataset.id).editing = true; refresh(); },
     'post-save': (el) => { const p = S.posts.find((x) => x.id === el.dataset.id); const prev = p.text; p.text = $('#pt-' + p.id).value; p.editing = false; S.approvals.forEach((a) => { if (a.type === 'social' && a.after === prev) a.after = p.text; }); refresh(); },
 
-    wa: (el) => { S.wa[el.dataset.k] = el.dataset.v; if (el.dataset.k === 'review' && el.dataset.v === 'Approve reply') { const r = S.reviews.find((x) => x.id === 'r1'); r.replied = true; S.approvals = S.approvals.filter((a) => a.id !== 'a3'); } if (el.dataset.k === 'nudge' && el.dataset.v === 'Approve') { S.posts[0].status = 'scheduled'; S.approvals = S.approvals.filter((a) => a.id !== 'a4'); } refresh(); },
+    wa: (el) => { S.wa[el.dataset.k] = el.dataset.v; if (el.dataset.k === 'enquiry') { const e = S.enquiries.find((x) => x.id === 'e1'); if (e) e.done = el.dataset.v; } if (el.dataset.k === 'review' && el.dataset.v === 'Approve reply') { const r = S.reviews.find((x) => x.id === 'r1'); r.replied = true; S.approvals = S.approvals.filter((a) => a.id !== 'a3'); } if (el.dataset.k === 'nudge' && el.dataset.v === 'Approve') { S.posts[0].status = 'scheduled'; S.approvals = S.approvals.filter((a) => a.id !== 'a4'); } refresh(); },
 
+    'enq-call': (el) => { const e = S.enquiries.find((x) => x.id === el.dataset.id); toast(`Calling ${esc(e.name)} on ${e.phone} (demo)`); enqDone(e.id, 'Called back'); },
+    'enq-reply': (el) => replyModal(el.dataset.id),
+    'enq-send': (el) => { closeModal(); toast('Reply sent'); enqDone(el.dataset.id, 'Reply sent'); },
+    'enq-done': (el) => enqDone(el.dataset.id, 'Done'),
+    handover: handoverModal,
+    'handover-send': () => { const to = $('#hoTo').value.trim(); if (!/^\S+@\S+\.\S+$/.test(to)) { toast('Enter your developer’s email'); $('#hoTo').focus(); return; } S.site.stage = 3; closeModal(); addActivity('navy', `New site sent to your developer (${to})`); toast(`Sent to ${esc(to)} — we’ll tell you when it’s live`); refresh(); },
+    restore: (el) => { const v = S.site.versions.find((x) => x.id === el.dataset.id); S.site.versions.unshift({ id: uid('v'), when: 'Just now', what: `Restored: ${v.what}`, by: 'You' }); addActivity('gold', `Restored an earlier version: ${v.what}`); toast('Earlier version restored'); refresh(); },
+    'switch-dev': switchDevModal,
+    'switch-send': () => {
+      const email = $('#swEmail').value.trim(); const name = $('#swName').value.trim();
+      if (!/^\S+@\S+\.\S+$/.test(email)) { toast('Enter a valid email'); $('#swEmail').focus(); return; }
+      const old = S.team.find((m) => m.role === 'Developer guest');
+      S.team = S.team.filter((m) => m !== old);
+      const initials = (name || email).split(/[\s@.]+/).filter(Boolean).slice(0, 2).map((s) => s[0].toUpperCase()).join('');
+      S.invites.push({ name, email, initials }); closeModal();
+      addActivity('navy', `${old.name} removed. Invite and handover pack sent to ${name || email}`);
+      toast(`${esc(old.name)} removed · invite sent to ${esc(email)}`); refresh();
+    },
     invite: inviteModal,
     'invite-send': () => {
       const email = $('#invEmail').value.trim(); const name = $('#invName').value.trim();

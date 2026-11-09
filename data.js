@@ -95,6 +95,36 @@ window.WL_DATA = {
     ]
   },
 
+  enquiries: [
+    { id: 'e1', title: 'Leaking pipe', tag: 'Urgent', cls: 'chip-red', name: 'Gráinne Walsh', phone: '087 214 5521', source: 'Website form', found: 'Google search', when: '8 min ago',
+      text: 'Water coming through the kitchen ceiling. Can someone come today?',
+      draft: 'Hi Gráinne, thanks for getting in touch. Turn off the water at the stopcock under the sink if you can. Declan can be with you within the hour - we will ring you in the next few minutes to confirm. Murphy & Sons, 041 983 2210' },
+    { id: 'e2', title: 'Boiler service quote', tag: 'Quote', cls: 'chip-amber', name: 'Paul Reilly', phone: '086 330 1187', source: 'Google message', found: 'Google Business Profile', when: '1 hour ago',
+      text: 'How much for a gas boiler service? I am in Termonfeckin.',
+      draft: 'Hi Paul, a standard gas boiler service is €95 including VAT and we cover Termonfeckin. We have slots on Thursday and Friday this week - would either suit? Declan, Murphy & Sons' },
+    { id: 'e3', title: 'Bathroom refit', tag: 'New job', cls: 'chip-green', name: 'Siobhán Kenny', phone: '085 772 9034', source: 'Website form', found: 'Asked ChatGPT', when: 'Yesterday',
+      text: 'Looking to redo our main bathroom. Could someone call out next week to have a look?',
+      draft: 'Hi Siobhán, thanks for thinking of us. We would be happy to call out and give you a free quote. Would Tuesday or Wednesday morning next week suit? Declan, Murphy & Sons' }
+  ],
+  enquiryStats: { month: 14, website: 7, google: 4, chatgpt: 2, facebook: 1 },
+
+  site: {
+    kind: 'Improved copy of murphyplumbing.ie',
+    preview: 'preview.eagle.winglift.io/murphy-sons',
+    repo: 'github.com/murphyplumbing/website',
+    stage: 2,
+    stages: ['Eagle built your site', 'You checked your preview link', 'Sent to your developer', 'Live on your hosting'],
+    fixed: ['Business details added for Google and AI (schema)', 'llms.txt added', 'AI tools no longer blocked in robots.txt', 'Sitemap added', 'Old links redirected (23 pages)'],
+    decide: ['Two different phone numbers found - which is right?', 'Your old address appears on the About page - remove it?'],
+    versions: [
+      { id: 'v14', when: 'Today, 08:14', what: 'Sunday hours: emergency call-outs 10:00 - 16:00', by: 'You (WhatsApp)' },
+      { id: 'v13', when: 'Mon 2 Nov', what: 'FAQ added: How much does a boiler service cost?', by: 'You (approved)' },
+      { id: 'v12', when: 'Thu 29 Oct', what: 'Phone number updated in footer', by: 'You (approved)' },
+      { id: 'v11', when: 'Tue 20 Oct', what: 'Areas we cover: Laytown and Duleek added', by: 'Aoife Byrne (approved by you)' },
+      { id: 'v10', when: 'Mon 12 Oct', what: 'New site built from murphyplumbing.ie', by: 'Eagle' }
+    ]
+  },
+
   approvals: [
     { id: 'a1', type: 'site', title: 'Homepage: add “Plumber in Drogheda” intro paragraph', source: 'Wren fix #2', when: '2h ago',
       before: 'Welcome to Murphy & Sons. Quality work you can trust.',
