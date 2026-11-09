@@ -1,4 +1,4 @@
-# WingLift dashboard — clickable prototype (staging)
+# Eagle by WingLift — dashboard clickable prototype (staging)
 
 > **This is a prototype.** Static HTML/CSS/JS with hardcoded fake data. No backend, no auth, no persistence. Nothing publishes anywhere. It exists to demo the product concept before building it.
 
@@ -8,7 +8,7 @@ Run locally with any static server, e.g. `python3 -m http.server 8000` from the 
 
 ## Product model (final decisions)
 
-- **Pure SaaS for small business owners.** WingLift does **not** rebuild sites, host sites, or hand over code.
+- **Product name: Eagle by WingLift.** Pure SaaS for small business owners. Eagle does **not** rebuild sites, host sites, or hand over code.
 - **The owner keeps their own developer.** The developer does the code work and is invited to the dashboard as a **guest** (sees technical/deploy info, can propose changes, never sees billing).
 - **One plan: €99/month, everything included.**
 - **Positioning:** “Your website, your code, your dashboard — your developer works for you again.”
@@ -24,7 +24,7 @@ Do **not** show a numeric score anywhere. Show concrete findings instead:
 - The verbatim text each AI says for real customer searches
 - Accuracy flags (e.g. “Gemini lists your old address”)
 - Competitor comparison (e.g. “ChatGPT names 3 competitors for ‘plumber in Drogheda’, not you”)
-- A prioritised, plain-English fix list (who does it: owner / WingLift / developer)
+- A prioritised, plain-English fix list (who does it: owner / Eagle / developer)
 - Change events over time (“Claude started mentioning you this week”, “a competitor just appeared in ChatGPT results”)
 
 ## Fake business used throughout

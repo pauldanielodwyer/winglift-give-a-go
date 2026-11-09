@@ -1,4 +1,4 @@
-/* Fake data for the WingLift dashboard prototype. Nothing here is real. */
+/* Fake data for the Eagle dashboard prototype. Nothing here is real. */
 window.WL_DATA = {
   business: {
     name: 'Murphy & Sons Plumbing & Heating',
@@ -79,9 +79,9 @@ window.WL_DATA = {
     },
     fixes: [
       { id: 'f1', title: 'Fix your old address on Golden Pages and Google Business Profile', why: 'Gemini is reading 14 West Street from an old Golden Pages listing. Updating it is the fastest way to stop customers going to the wrong place.', who: 'You', effort: '10 min', action: 'queue' },
-      { id: 'f2', title: 'Add a clear “Plumber in Drogheda” section to your homepage', why: 'ChatGPT can’t tell what you do or where. One plain-English paragraph naming your services and towns fixes that.', who: 'WingLift', effort: 'We draft it, you approve', action: 'vibe' },
+      { id: 'f2', title: 'Add a clear “Plumber in Drogheda” section to your homepage', why: 'ChatGPT can’t tell what you do or where. One plain-English paragraph naming your services and towns fixes that.', who: 'Eagle', effort: 'We draft it, you approve', action: 'vibe' },
       { id: 'f3', title: 'Add a heat pump services page', why: 'Claude and Gemini send heat pump customers to Boyne Energy Solutions because your site never mentions heat pumps.', who: 'Your developer', effort: '1–2 hours', action: 'dev' },
-      { id: 'f4', title: 'Answer “Are you open on Sundays?” in your FAQ', why: 'Gemini says you’re closed on Sundays. A clear FAQ answer gives AI systems the right information.', who: 'WingLift', effort: 'Uses 1 FAQ deploy', action: 'faq' },
+      { id: 'f4', title: 'Answer “Are you open on Sundays?” in your FAQ', why: 'Gemini says you’re closed on Sundays. A clear FAQ answer gives AI systems the right information.', who: 'Eagle', effort: 'Uses 1 FAQ deploy', action: 'faq' },
       { id: 'f5', title: 'Add LocalBusiness structured data (schema)', why: 'Hidden code that tells AI your address, hours and services in a format it trusts. Your developer can paste it in.', who: 'Your developer', effort: '30 min', action: 'dev' },
       { id: 'f6', title: 'Ask 5 recent customers for a Google review', why: 'ChatGPT names businesses with recent reviews that mention the town. Your newest review is three weeks old.', who: 'You', effort: '5 min', action: 'reviews' }
     ],
@@ -169,6 +169,6 @@ window.WL_DATA = {
     { id: 'chg_8f21', when: 'Mon 2 Nov, 14:02', what: 'FAQ added: “How much does a boiler service cost?”', how: 'WP REST · POST /wp/v2/pages/42', by: 'Declan (approved)', rev: 'rev 4171' },
     { id: 'chg_8e97', when: 'Thu 29 Oct, 09:15', what: 'Phone number updated in footer widget', how: 'WP REST · POST /wp/v2/widgets/text-3', by: 'Declan (approved)', rev: 'rev 4158' },
     { id: 'chg_8d40', when: 'Tue 20 Oct, 17:41', what: 'FAQPage JSON-LD regenerated', how: 'WP REST · POST /wp/v2/pages/42 (meta)', by: 'Auto (FAQ deploy)', rev: 'rev 4133' },
-    { id: 'chg_8c02', when: 'Mon 12 Oct, 11:20', what: 'WingLift connected (application password)', how: 'WP REST · auth check', by: 'Aoife (setup)', rev: '—' }
+    { id: 'chg_8c02', when: 'Mon 12 Oct, 11:20', what: 'Eagle connected (application password)', how: 'WP REST · auth check', by: 'Aoife (setup)', rev: '—' }
   ]
 };

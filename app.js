@@ -1,4 +1,4 @@
-/* WingLift dashboard prototype — hash-routed, in-memory state, no backend. */
+/* Eagle dashboard prototype — hash-routed, in-memory state, no backend. */
 (function () {
   'use strict';
 
@@ -98,7 +98,7 @@
       : `<a href="#/${n.r}" class="${n.r === route ? 'active' : ''}">${icon(n.ico)}<span>${n.label}</span>${n.badge ? `<span class="count" ${c[n.badge] ? '' : 'data-zero'}>${c[n.badge] || ''}</span>` : ''}</a>`).join('');
     $('#sideFoot').innerHTML = S.role === 'dev'
       ? `Guest access granted by <strong>${S.owner.name}</strong>.<br>Billing &amp; account settings are hidden.`
-      : `<strong>WingLift</strong> · one plan<br><span class="plan-pill">€99 / month · everything included</span>`;
+      : `<strong>Eagle</strong> · one plan<br><span class="plan-pill">€99 / month · everything included</span>`;
     const u = S.role === 'dev' ? S.developer : S.owner;
     $('#userChip').innerHTML = `<span class="av" style="background:${S.role === 'dev' ? '#4A6CB7' : '#E3A72F'};color:${S.role === 'dev' ? '#fff' : '#13234A'}">${u.initials}</span><span class="nm">${u.name}</span>`;
     $('#topbarTitle').textContent = TITLES[route] || '';
@@ -109,7 +109,7 @@
       el.textContent = n || '';
       el.toggleAttribute('data-zero', !n);
     });
-    document.title = `${TITLES[route] || 'Dashboard'} — WingLift prototype`;
+    document.title = `${TITLES[route] || 'Dashboard'} — Eagle prototype`;
   }
 
   function parseHash() {
@@ -240,7 +240,7 @@
             <div class="stack">
               <a href="#/vibe" class="btn" style="width:100%;justify-content:flex-start">${icon('chat')} Change something on my website</a>
               <a href="#/reviews" class="btn" style="width:100%;justify-content:flex-start">${icon('star')} Ask a customer for a review</a>
-              <a href="#/whatsapp" class="btn" style="width:100%;justify-content:flex-start">${icon('phone')} See WingLift on WhatsApp</a>
+              <a href="#/whatsapp" class="btn" style="width:100%;justify-content:flex-start">${icon('phone')} See Eagle on WhatsApp</a>
               <a href="#/team" class="btn" style="width:100%;justify-content:flex-start">${icon('users')} Invite my developer</a>
             </div>
           </div>
@@ -248,7 +248,7 @@
       </div>`;
   };
 
-  const WHO_CHIP = { 'You': 'chip-gold', 'WingLift': 'chip-navy', 'Your developer': 'chip-green' };
+  const WHO_CHIP = { 'You': 'chip-gold', 'Eagle': 'chip-navy', 'Your developer': 'chip-green' };
   function fixItem(f, i) {
     const act = {
       queue: `<button class="btn btn-sm" data-action="fix-queue" data-id="${f.id}">Remind me on WhatsApp</button>`,
@@ -282,7 +282,7 @@
       </div>
       <div class="chat-wrap">
         <div class="chat">
-          <div class="chat-head"><span class="agent-av">${FEATHER}</span><div><strong>WingLift agent</strong><div class="tiny muted">Editing ${S.business.site} · ${wp ? 'publishes via WordPress' : 'gives you copy-paste code'}</div></div></div>
+          <div class="chat-head"><span class="agent-av">${FEATHER}</span><div><strong>Eagle agent</strong><div class="tiny muted">Editing ${S.business.site} · ${wp ? 'publishes via WordPress' : 'gives you copy-paste code'}</div></div></div>
           <div class="chat-log" id="chatLog">${S.chat.map(msgHtml).join('')}</div>
           <div class="suggests" id="suggests">
             <button class="suggest" data-action="suggest">change Sunday hours to 10–4</button>
@@ -309,7 +309,7 @@
             ${wp ? `<div class="row mt-2"><span class="chip chip-green">Connected</span><span class="small">WordPress REST API</span></div>
               <p class="small muted mt-1">Using a scoped application password set up by ${S.developer.name}. Every edit is saved as a WordPress revision, so it can be undone.</p>`
               : `<div class="row mt-2"><span class="chip chip-amber">Copy-paste mode</span></div>
-              <p class="small muted mt-1">Your site isn’t on WordPress, so the agent prepares the exact code change and you (or your developer) paste it in. WingLift never needs access to your hosting.</p>`}
+              <p class="small muted mt-1">Your site isn’t on WordPress, so the agent prepares the exact code change and you (or your developer) paste it in. Eagle never needs access to your hosting.</p>`}
           </div>
           <div class="card">
             <h3>Current opening hours</h3>
@@ -465,7 +465,7 @@
     const label = { all: 'All', site: 'Site edits', faq: 'FAQ', social: 'Social', review: 'Review replies' };
     const list = S.approvals.filter((a) => f === 'all' || a.type === f);
     return `
-      <div class="page-head"><div><h1>Approval queue</h1><p>Everything WingLift or your developer wants to publish waits here. Nothing goes live without your OK.</p></div>
+      <div class="page-head"><div><h1>Approval queue</h1><p>Everything Eagle or your developer wants to publish waits here. Nothing goes live without your OK.</p></div>
         ${S.approvals.length ? `<button class="btn" data-action="approve-all">Approve all ${list.length === S.approvals.length ? '' : 'shown '}(${list.length})</button>` : ''}
       </div>
       <div class="tabs">${types.map((t) => {
@@ -686,7 +686,7 @@
 
   /* 7. WhatsApp */
   SCREENS.whatsapp = () => `
-    <div class="page-head"><div><h1>WingLift on WhatsApp</h1><p>Most owners never open the dashboard. They approve things from WhatsApp in between jobs. Tap the buttons to try it.</p></div></div>
+    <div class="page-head"><div><h1>Eagle on WhatsApp</h1><p>Most owners never open the dashboard. They approve things from WhatsApp in between jobs. Tap the buttons to try it.</p></div></div>
     <div class="phones">
       <div class="phone-col"><h3>Daily suggestion</h3>${phone(waNudge(), 'nudge')}<span class="tiny muted">Template message · sent 08:00 each weekday</span></div>
       <div class="phone-col"><h3>Review alert</h3>${phone(waReview(), 'review')}<span class="tiny muted">Sent within minutes of a new review</span></div>
@@ -695,7 +695,7 @@
   function phone(body, key, withInput) {
     return `<div class="phone"><div class="screen">
       <div class="wa-status"><span>9:41</span><span>●●● 5G</span></div>
-      <div class="wa-head"><span style="font-size:1.1rem">‹</span><span class="av">${FEATHER}</span><div><div class="nm">WingLift</div><div class="st">Business account</div></div></div>
+      <div class="wa-head"><span style="font-size:1.1rem">‹</span><span class="av">${FEATHER}</span><div><div class="nm">Eagle</div><div class="st">Business account</div></div></div>
       <div class="wa-body" id="wa-${key}">${body}</div>
       <form class="wa-input" data-wa="${key}" autocomplete="off"><input placeholder="Message" ${withInput ? '' : 'disabled'} aria-label="WhatsApp message"><button type="submit" aria-label="Send">${icon('send', 'width="15" height="15"')}</button></form>
     </div></div>`;
@@ -764,7 +764,7 @@
       </div>
       <div class="card">
         <h3>Why invite your developer?</h3>
-        <p class="small mt-1" style="color:var(--fg-soft)">WingLift doesn’t rebuild or host your website, and we never take over your code. Your developer keeps doing the technical work — now with a clear, prioritised list of exactly what AI systems are getting wrong.</p>
+        <p class="small mt-1" style="color:var(--fg-soft)">Eagle doesn’t rebuild or host your website, and we never take over your code. Your developer keeps doing the technical work — now with a clear, prioritised list of exactly what AI systems are getting wrong.</p>
         <ul class="small mt-2" style="padding-left:18px;color:var(--fg-soft)">
           <li>They see the audit findings and technical fixes</li>
           <li>They propose changes; you approve them</li>
@@ -782,7 +782,7 @@
         <label class="check"><input type="checkbox" checked> Propose site changes to my approval queue</label>
         <label class="check locked"><input type="checkbox" disabled> Billing &amp; plan <span class="tiny">(never shared with guests)</span></label>
       </div>
-      <div class="field"><label for="invMsg">Personal note (optional)</label><textarea class="textarea" id="invMsg" style="min-height:60px">Hi — I’m using WingLift to keep an eye on how AI tools describe the business. Can you take a look at the technical fixes?</textarea></div>
+      <div class="field"><label for="invMsg">Personal note (optional)</label><textarea class="textarea" id="invMsg" style="min-height:60px">Hi — I’m using Eagle to keep an eye on how AI tools describe the business. Can you take a look at the technical fixes?</textarea></div>
       <div class="modal-acts"><button class="btn btn-ghost" data-action="modal-close">Cancel</button><button class="btn btn-primary" data-action="invite-send">Send invite</button></div>`);
   }
 
@@ -797,8 +797,8 @@
           <dl class="kv">
             <dt>Site</dt><dd>https://${S.business.site}</dd>
             <dt>CMS</dt><dd>WordPress 6.6.2 · Astra child theme</dd>
-            <dt>Hosting</dt><dd>Owner’s own (Blacknight) — WingLift has no hosting access</dd>
-            <dt>Publish method</dt><dd>WP REST API · application password “WingLift”</dd>
+            <dt>Hosting</dt><dd>Owner’s own (Blacknight) — Eagle has no hosting access</dd>
+            <dt>Publish method</dt><dd>WP REST API · application password “Eagle”</dd>
             <dt>WP user / role</dt><dd class="mono">winglift-bot / editor</dd>
             <dt>Last connection check</dt><dd>Today 07:00 · 200 OK</dd>
             <dt>Rollback</dt><dd>Every change saved as a WP revision</dd>
@@ -816,13 +816,13 @@
           <div class="card"><div class="card-head"><h2>Fixes that need a developer</h2></div>
             <ul class="list-plain">${devFixes.map((f) => `<li class="fix-item"><span class="fix-num">${S.audit.fixes.indexOf(f) + 1}</span><div style="flex:1"><strong>${esc(f.title)}</strong><div class="why">${esc(f.why)}</div><div class="acts"><span class="chip no-dot">${esc(f.effort)}</span><button class="btn btn-sm btn-primary" data-action="dev-prefill" data-id="${f.id}">Propose a change</button></div></div></li>`).join('')}</ul>
           </div>
-          <div class="card"><div class="card-head"><h2>Deploy log</h2><span class="sub">Every change WingLift has published</span></div>
+          <div class="card"><div class="card-head"><h2>Deploy log</h2><span class="sub">Every change Eagle has published</span></div>
             <div style="overflow-x:auto"><table class="log-tbl"><thead><tr><th>When</th><th>Change</th><th>Method</th><th>By</th></tr></thead><tbody>
               ${S.deployLog.map((l) => `<tr><td class="small">${l.when}<div class="mono tiny muted">${l.id}</div></td><td>${esc(l.what)}</td><td class="mono tiny">${esc(l.how)}<div class="muted">${l.rev}</div></td><td class="small">${esc(l.by)}</td></tr>`).join('')}
             </tbody></table></div>
           </div>
         </div>
-        <div class="card" id="proposeCard"><h2>Propose a change</h2><p class="small muted mt-1">Goes to ${S.owner.first}’s approval queue. Once approved, you deploy it — or WingLift publishes it via the REST API.</p>
+        <div class="card" id="proposeCard"><h2>Propose a change</h2><p class="small muted mt-1">Goes to ${S.owner.first}’s approval queue. Once approved, you deploy it — or Eagle publishes it via the REST API.</p>
           <div class="field mt-2"><label for="pTitle">Title</label><input class="input" id="pTitle" placeholder="e.g. Add LocalBusiness schema"></div>
           <div class="field"><label for="pType">Type</label><select class="select" id="pType"><option>Code / markup</option><option>Content</option><option>Plugin or settings</option></select></div>
           <div class="field"><label for="pDesc">What and why (plain English for ${S.owner.first})</label><textarea class="textarea" id="pDesc"></textarea></div>
@@ -896,7 +896,7 @@
     <div class="page-head"><div><h1>Plan &amp; billing</h1><p>One plan. Everything included. Cancel any time — your website and code stay yours.</p></div></div>
     <div class="grid g-main">
       <div class="card">
-        <div class="row"><h2>WingLift</h2><span class="chip chip-green">Active</span></div>
+        <div class="row"><h2>Eagle</h2><span class="chip chip-green">Active</span></div>
         <div class="price mt-2">€99<small> / month</small></div>
         <p class="small muted">Excl. VAT · billed monthly · next invoice 1 Dec 2026</p>
         <p class="mt-2" style="font-family:Manrope;font-weight:700">Your website, your code, your dashboard — your developer works for you again.</p>
@@ -904,7 +904,7 @@
           <li>Weekly Wren AI audit (ChatGPT, Claude, Gemini)</li><li>Vibe Update Agent</li><li>Unified approval queue</li><li>FAQ manager (5 slots, 3 deploys/week)</li>
           <li>Google review replies &amp; requests</li><li>Social posts: Meta, LinkedIn, Google</li><li>WhatsApp approvals &amp; alerts</li><li>Free developer guest seats</li>
         </ul>
-        <div class="alert alert-navy mt-3 small">WingLift is software only. We don’t rebuild or host your website and there’s no code handover — your site stays exactly where it is.</div>
+        <div class="alert alert-navy mt-3 small">Eagle is software only. We don’t rebuild or host your website and there’s no code handover — your site stays exactly where it is.</div>
       </div>
       <div class="stack">
         <div class="card"><h3>Payment method</h3><div class="row mt-2"><span class="chip no-dot">VISA</span><span>•••• 4242 · exp 08/28</span><span class="spacer"></span><button class="btn btn-sm" data-action="toast" data-msg="Card update opened (demo)">Update</button></div></div>
